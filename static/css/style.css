@@ -1,0 +1,1294 @@
+/* ====================================
+   GLOBAL & HTML BASE STYLES
+   ==================================== */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f4f6f9;
+    min-height: 100vh; /* Full viewport height */
+}
+
+/* ====================================
+   LAYOUT STYLES
+   ==================================== */
+
+/* -------------------------------
+   HEADER
+--------------------------------- */
+/* -------------------------------
+   HEADER
+--------------------------------- */
+.header {
+    height: 80px;
+    background-color: #2c3e50;
+    color: #fff;
+    display: flex;
+    justify-content: center; /* center content horizontally */
+    align-items: center;     /* center content vertically */
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+/* LEFT: logo + heading */
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Logo styling */
+.header-logo-link {
+    display: inline-block;
+}
+
+.header-logo {
+    height: 60px;          /* smaller than header height */
+    width: 60px;           /* make it square for perfect circle */
+    border-radius: 50%;    /* makes logo round */
+    border: 2px solid #ffffff; /* white border */
+    object-fit: cover;     /* keep image aspect ratio */
+    display: block;
+}
+
+/* Header text styling */
+.header-title {
+    font-size: 24px;
+    margin: 0;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+/* RIGHT: user info and logout button */
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    position: absolute; /* keep on right */
+    right: 20px;
+}
+
+.header-user {
+    font-weight: 500;
+    color: #ffffff;
+}
+
+.header-logout-btn {
+    background-color: transparent;
+    border: 2px solid #ffffff;
+    color: #ffffff;
+    font-weight: 500;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.header-logout-btn:hover {
+    background-color: #ffffff;
+    color: #2c3e50;
+    border-color: #ffffff;
+}
+
+
+/* -------------------------------
+   FOOTER
+--------------------------------- */
+.footer {
+    height: 57px;
+    padding-top: 1px;
+    background-color: #2c3e50;
+    color: #fff;
+    text-align: center;
+    line-height: 40px; /* Vertical alignment */
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* -------------------------------
+   MAIN CONTAINER
+--------------------------------- */
+.main-container {
+    display: flex;
+    min-height: calc(100vh - 117px); /* 100vh - header - footer */
+}
+
+/* -------------------------------
+   CONTENT AREA
+--------------------------------- */
+.content {
+    flex: 1;
+    padding: 20px;
+    background-color: #ffffff;
+}
+
+/* ====================================
+   SIDEBAR MENU
+   ==================================== */
+.sidebar {
+    width: 250px;
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    font-family: Arial, sans-serif;
+    min-height: 100%;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    padding-top: 10px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    flex-shrink: 0;
+}
+
+.menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu-item {
+    border-bottom: 1px solid #34495e;
+}
+
+.menu-item:last-child {
+    border-bottom: none;
+}
+
+.menu-item a {
+    display: block;
+    padding: 12px 15px;
+    text-decoration: none;
+    color: #ecf0f1;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.menu-item a:hover {
+    background-color: #3498db;
+    color: #ffffff;
+}
+
+/* Submenu toggle and arrow */
+.submenu-toggle { cursor: pointer; font-weight: bold; }
+.menu-item.open > .submenu-toggle { background-color: #2980b9; }
+.menu-item.active-branch > .submenu-toggle { background-color: #1f6f9f; color: #ffffff; } 
+.menu-item a.active-sidebar-link { background-color: #16a085 !important; color: #ffffff !important; font-weight: 700; border-left: 4px solid #f1c40f; padding-left: 11px; } 
+.submenu .menu-item a.active-sidebar-link { background-color: #168f78 !important; padding-left: 26px; } 
+.submenu .child-menu .menu-item a.active-sidebar-link { background-color: #168f78 !important; padding-left: 41px; } 
+
+.arrow {
+    float: right;
+    display: inline-block;
+    transition: transform 0.2s ease;
+    font-size: 1.2em;
+    line-height: 1;
+}
+
+.has-submenu.open > a .arrow {
+    transform: rotate(90deg);
+}
+
+/* Submenu collapse/expand */
+.submenu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background-color: #34495e;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out;
+}
+
+.menu-item.open > .submenu {
+    max-height: 1000px;
+    transition: max-height 0.3s ease-in-out;
+}
+
+/* Submenu levels */
+.submenu .menu-item a { padding-left: 30px; font-weight: normal; background-color: #34495e; }
+.submenu .menu-item a:hover { background-color: #3a536b; }
+
+.submenu .child-menu { margin-left: 10px; }
+.submenu .child-menu .menu-item a { padding-left: 45px; background-color: #3a536b; }
+.submenu .child-menu .menu-item a:hover { background-color: #466079; }
+
+/* ====================================
+   AUTHENTICATION FORM
+   ==================================== */
+.auth-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.auth-container {
+    background: #fff;
+    padding: 40px 30px;
+    border-radius: 8px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+    width: 400px;
+    max-width: 90%;
+    text-align: center;
+}
+
+.auth-container input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.auth-container button {
+    width: 100%;
+    padding: 12px;
+    background-color: #2c3e50;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.auth-container button:hover {
+    background-color: #1a252f;
+}
+
+/* Messages */
+.msg-box {
+    margin-top: 15px;
+    padding: 12px;
+    background-color: #f8d7da;
+    color: #721c24;
+    border-radius: 6px;
+    border: 1px solid #f5c6cb;
+}
+
+/* ====================================
+   TABLE STYLING
+   ==================================== */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th, .table td {
+    vertical-align: middle !important;
+    font-size: 0.85rem;
+    padding: 6px 8px;
+}
+
+.table th:nth-child(1),
+.table td:nth-child(1) { width: 50px; } /* SL */
+.table th:nth-child(2),
+.table td:nth-child(2) { width: 120px; } /* Company Id */
+.table th:nth-child(4),
+.table td:nth-child(4) { width: 140px; } /* Type Name */
+.table th:nth-child(5),
+.table td:nth-child(5) { width: 180px; } /* Email */
+.table th:nth-child(6),
+.table td:nth-child(6) { width: 120px; } /* Phone */
+.table th:nth-child(7),
+.table td:nth-child(7) { width: 180px; } /* Address */
+.table th:nth-child(8),
+.table td:nth-child(8) { width: 140px; } /* Domain */
+.table th:nth-child(9),
+.table td:nth-child(9) { width: 100px; } /* Logo */
+.table th:nth-child(10),
+.table td:nth-child(10) { width: 140px; } /* Action */
+
+.table-responsive { overflow-x: auto; }
+
+/* Table hover */
+#companyDetailTableBody tr {
+    transition: background-color 0.2s ease;
+}
+#companyDetailTableBody tr.selected-row {
+    background-color: #d1e7ff !important;
+    font-weight: bold;
+}
+
+/* ====================================
+   MODAL STYLING
+   ==================================== */
+.modal-header.bg-primary {
+    background-color: #3498db;
+    color: white;
+}
+
+.modal-xl {
+    max-width: 95%;
+}
+
+.modal-xl input, .modal-xl select {
+    font-size: 0.85rem;
+}
+
+/* FORM ELEMENTS IN MODAL */
+input, select {
+    padding: 6px 10px;
+    margin-bottom: 8px;
+    border-radius: 4px;
+    border: 1px solid #ced4da;
+}
+
+/* ====================================
+   BUTTON STYLING
+   ==================================== */
+.btn {
+    font-size: 0.85rem;
+}
+
+.btn-primary { background-color: #3498db; border-color: #3498db; }
+.btn-primary:hover { background-color: #2980b9; border-color: #2980b9; }
+
+.btn-info { background-color: #17a2b8; border-color: #17a2b8; }
+.btn-warning { background-color: #ffc107; border-color: #ffc107; }
+.btn-danger { background-color: #dc3545; border-color: #dc3545; }
+
+/* ====================================
+   TEXT ALIGNMENT
+   ==================================== */
+.text-end { text-align: right !important; }
+.text-center { text-align: center !important; }
+
+/* ====================================
+   RESPONSIVE FIXES
+   ==================================== */
+@media (max-width: 768px) {
+    .table-responsive { font-size: 0.8rem; overflow-x: auto; }
+    .btn { font-size: 0.8rem; }
+    .content { margin-left: 0; padding: 10px; }
+}
+
+#edit_medicineListTableBody tr.selected-row td{
+    background:#ffe08a !important;
+    color:#000 !important;
+    font-weight:800 !important;
+    border-color:#e6b800 !important;
+}
+
+
+
+.main-container.no-sidebar .sidebar {
+    display: none;
+}
+.main-container.no-sidebar .content {
+    flex: 1;
+}
+
+/* Hover & selection for JS-driven table */
+#medicineListTableBody tr {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+#medicineListTableBody tr.selected-row {
+    background-color: #d1e7ff !important;
+    font-weight: bold;
+}
+
+/* Pagination Styling */
+.pagination .page-item .page-link {
+    border-radius: 0.25rem;
+    margin: 0 2px;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #3498db;
+    border-color: #3498db;
+    color: #fff;
+}
+
+/* ====================================
+   MODAL STYLING
+   ==================================== */
+.modal-header.bg-primary {
+    background-color: #3498db;
+    color: white;
+}
+
+.modal-xl {
+    max-width: 95%;
+}
+
+/* FORM ELEMENTS IN MODAL */
+input, select {
+    padding: 6px 10px;
+    margin-bottom: 8px;
+    border-radius: 4px;
+    border: 1px solid #ced4da;
+}
+
+/* BUTTON STYLING */
+.btn-primary {
+    background-color: #3498db;
+    border-color: #3498db;
+}
+
+.btn-primary:hover {
+    background-color: #2980b9;
+    border-color: #2980b9;
+}
+
+.btn-info {
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+}
+
+.btn-warning {
+    background-color: #ffc107;
+    border-color: #ffc107;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+/* TEXT ALIGNMENT */
+.text-end {
+    text-align: right !important;
+}
+
+.text-center {
+    text-align: center !important;
+}
+
+/* ====================================
+   SELECTED ITEMS LIST (JS) STYLING
+   ==================================== */
+#selectedMedicineList tr td {
+    vertical-align: middle;
+}
+
+.remove-item {
+    font-size: 0.85rem;
+    padding: 2px 6px;
+}
+
+/* SMALL RESPONSIVE FIX */
+@media (max-width: 768px) {
+    .table-responsive {
+        font-size: 0.85rem;
+    }
+    .btn {
+        font-size: 0.85rem;
+    }
+}
+
+#edit_medicineListTableBody tr.selected-row td{
+    background:#ffe08a !important;
+    color:#000 !important;
+    font-weight:800 !important;
+    border-color:#e6b800 !important;
+}
+
+.table-active-row {
+    background-color: #0d6efd !important;
+    color: white;
+}
+
+.bg-blue {
+    background-color: #0d6efd;
+    color: white;
+}
+
+
+/* Select2 product result width */
+.select2-container {
+    width: 100% !important;
+}
+
+/* Product search dropdown একটু wide রাখা */
+.select2-container--open .select2-dropdown {
+    min-width: 650px;
+}
+
+/* Header-এর মতো product row */
+.product-search-row {
+    display: grid;
+    grid-template-columns:
+        minmax(180px, 2fr)
+        minmax(160px, 1.5fr)
+        80px
+        100px;
+
+    align-items: center;
+    column-gap: 12px;
+
+    width: 100%;
+    padding: 5px 4px;
+}
+
+/* Product Name */
+.product-search-name {
+    font-weight: 600;
+    color: #212529;
+
+    white-space: normal;
+    word-break: break-word;
+}
+
+/* Generic Name */
+.product-search-generic {
+    color: #6c757d;
+
+    white-space: normal;
+    word-break: break-word;
+}
+
+/* Quantity */
+.product-search-qty {
+    text-align: center;
+    font-weight: 600;
+    color: #198754;
+}
+
+/* MRP */
+.product-search-mrp {
+    text-align: right;
+    font-weight: 600;
+    color: #0d6efd;
+}
+
+/* Dropdown result spacing */
+.select2-results__option {
+    padding: 6px 10px !important;
+}
+
+/* Selected/highlighted row text */
+.select2-container--default
+.select2-results__option--highlighted[aria-selected] 
+.product-search-name,
+
+.select2-container--default
+.select2-results__option--highlighted[aria-selected] 
+.product-search-generic,
+
+.select2-container--default
+.select2-results__option--highlighted[aria-selected] 
+.product-search-qty,
+
+.select2-container--default
+.select2-results__option--highlighted[aria-selected] 
+.product-search-mrp {
+    color: inherit;
+}
+
+/* Smaller screen adjustment */
+@media (max-width: 768px) {
+
+    .select2-container--open .select2-dropdown {
+        min-width: 100%;
+    }
+
+    .product-search-row {
+        grid-template-columns: 1fr;
+        row-gap: 3px;
+    }
+
+    .product-search-qty,
+    .product-search-mrp {
+        text-align: left;
+    }
+}
+
+.product-search-header {
+    display: grid;
+    grid-template-columns:
+        minmax(180px, 2fr)
+        minmax(160px, 1.5fr)
+        80px
+        100px;
+
+    column-gap: 12px;
+    align-items: center;
+
+    padding: 9px 14px;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    color: #212529;
+    background: #f1f3f5;
+
+    border-bottom: 1px solid #ced4da;
+
+    position: sticky;
+    top: 0;
+    z-index: 5;
+}
+
+.product-search-header > div:nth-child(3) {
+    text-align: center;
+}
+
+.product-search-header > div:nth-child(4) {
+    text-align: right;
+}
+
+
+/* preview */
+
+/* ======================================================
+   DIAGNOSIS PREVIEW - SAMPLE REPORT STYLE OVERRIDE
+   HTML same thakbe, only design change
+====================================================== */
+
+/* MAIN PAPER */
+
+.invoice-sheet {
+    width: 148mm !important;
+    max-width: 148mm !important;
+    min-height: 0 !important;
+    height: auto !important;
+    margin: 0 auto !important;
+    background: #fff !important;
+    padding: 24px 28px !important;
+    color: #000 !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    box-shadow: none !important;
+    font-size: 12px !important;
+    line-height: 1.15 !important;
+    box-sizing: border-box !important;
+}
+
+/* CENTER HEADER */
+.invoice-title {
+    text-align: center !important;
+    margin-bottom: 20px !important;
+}
+
+.invoice-title h3 {
+    font-size: 40px !important;
+    font-weight: 500 !important;
+    margin: 0 0 8px 0 !important;
+    letter-spacing: 1px !important;
+}
+
+/* Transaction ID line under title */
+.invoice-title small {
+    display: block !important;
+    font-size: 17px !important;
+    color: #000 !important;
+    font-weight: 400 !important;
+}
+
+/* =========================
+   HIDE EXTRA META INFO
+   Main Head / Method / Group etc.
+========================= */
+.transaction-meta-box {
+    display: none !important;
+}
+
+/* =========================
+   TOP INFO SECTION
+========================= */
+.invoice-info-section {
+    border-top: 1px dashed #bdbdbd !important;
+    border-bottom: 1px dashed #bdbdbd !important;
+    margin-top: 18px !important;
+}
+
+.invoice-info-row {
+    display: flex !important;
+    width: 100% !important;
+    min-height: 34px !important;
+    align-items: center !important;
+    border-bottom: 1px dashed #d4d4d4 !important;
+}
+
+.invoice-info-row:last-child {
+    border-bottom: none !important;
+}
+
+.invoice-info-column {
+    width: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    padding: 5px 0 !important;
+}
+
+.invoice-info-full {
+    width: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    padding: 5px 0 !important;
+}
+
+.invoice-label {
+    width: 125px !important;
+    min-width: 125px !important;
+    font-weight: 700 !important;
+    color: #000 !important;
+}
+
+.invoice-colon {
+    width: 18px !important;
+    min-width: 18px !important;
+    font-weight: 700 !important;
+    color: #000 !important;
+}
+
+.invoice-value {
+    flex: 1 !important;
+    color: #000 !important;
+    word-break: break-word !important;
+}
+
+/* =========================
+   TABLE STYLE
+========================= */
+.invoice-product-section {
+    margin-top: 42px !important;
+    border-top: 2px solid #000 !important;
+    padding-top: 12px !important;
+}
+
+.invoice-product-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    margin-bottom: 0 !important;
+    font-size: 18px !important;
+}
+
+.invoice-product-table thead th {
+    background: transparent !important;
+    color: #000 !important;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-bottom: 1px dashed #555 !important;
+    padding: 7px 4px !important;
+    font-weight: 700 !important;
+}
+
+.invoice-product-table tbody td {
+    border: none !important;
+    padding: 5px 4px !important;
+    vertical-align: middle !important;
+    color: #000 !important;
+}
+
+/* SL */
+.invoice-product-table th:nth-child(1),
+.invoice-product-table td:nth-child(1) {
+    width: 7% !important;
+    text-align: left !important;
+}
+
+/* Product ID */
+.invoice-product-table th:nth-child(2),
+.invoice-product-table td:nth-child(2) {
+    width: 15% !important;
+    text-align: left !important;
+}
+
+/* Description */
+.invoice-product-table th:nth-child(3),
+.invoice-product-table td:nth-child(3) {
+    text-align: left !important;
+}
+
+/* Qty */
+.invoice-product-table th:nth-child(4),
+.invoice-product-table td:nth-child(4) {
+    width: 10% !important;
+    text-align: center !important;
+}
+
+/* MRP / Total */
+.invoice-product-table th:nth-child(5),
+.invoice-product-table td:nth-child(5),
+.invoice-product-table th:nth-child(6),
+.invoice-product-table td:nth-child(6) {
+    width: 15% !important;
+    text-align: right !important;
+}
+
+/* =========================
+   REMARKS
+========================= */
+.invoice-remarks {
+    margin-top: 18px !important;
+    padding: 8px 0 !important;
+    border-top: 2px dashed #000 !important;
+    border-bottom: 2px solid #000 !important;
+    font-size: 18px !important;
+    font-weight: 700 !important;
+}
+
+/* =========================
+   BOTTOM SECTION
+========================= */
+.invoice-bottom-section {
+    margin-top: 15px !important;
+}
+
+.invoice-bottom-left {
+    padding-top: 0 !important;
+    font-size: 18px !important;
+}
+
+.invoice-bottom-left .info-line {
+    margin-bottom: 13px !important;
+}
+
+/* =========================
+   SUMMARY RIGHT SIDE
+========================= */
+.invoice-summary-box {
+    width: 100% !important;
+    font-size: 18px !important;
+}
+
+.summary-row {
+    display: grid !important;
+    grid-template-columns: 1fr 35px 130px !important;
+    align-items: center !important;
+    padding: 3px 0 !important;
+    border-bottom: none !important;
+}
+
+.summary-label {
+    font-weight: 400 !important;
+}
+
+.summary-symbol {
+    text-align: center !important;
+}
+
+.summary-value {
+    text-align: right !important;
+    font-weight: 400 !important;
+}
+
+.summary-strong {
+    border-top: 2px dashed #000 !important;
+    margin-top: 4px !important;
+    padding-top: 4px !important;
+}
+
+.summary-strong .summary-label,
+.summary-strong .summary-value {
+    font-weight: 700 !important;
+}
+
+.summary-balance {
+    border-top: 2px dashed #000 !important;
+    border-bottom: 2px solid #000 !important;
+    margin-top: 4px !important;
+    padding-top: 5px !important;
+    font-size: 18px !important;
+}
+
+.summary-balance .summary-label,
+.summary-balance .summary-value {
+    font-weight: 800 !important;
+}
+
+/* MODAL BACKGROUND */
+#transactionPreviewModal .modal-body {
+    background: #f5f5f5 !important;
+}
+
+#transactionPreviewModal .modal-content {
+    border-radius: 0 !important;
+}
+
+#transactionPreviewModal .modal-dialog {
+    max-width: 850px !important;
+}
+
+/* PRINT */
+@media print {
+    body {
+        background: #fff !important;
+    }
+
+    body * {
+        visibility: hidden;
+    }
+
+    .invoice-sheet,
+    .invoice-sheet * {
+        visibility: visible;
+    }
+
+    .invoice-sheet {
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100% !important;
+        max-width: none !important;
+        min-height: auto !important;
+        padding: 25px 45px !important;
+        margin: 0 !important;
+        box-shadow: none !important;
+    }
+
+    .modal-header,
+    .modal-footer,
+    .invoice-actions {
+        display: none !important;
+    }
+
+    .modal,
+    .modal-dialog,
+    .modal-content,
+    .modal-body {
+        position: static !important;
+        display: block !important;
+        overflow: visible !important;
+        box-shadow: none !important;
+        border: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        max-width: none !important;
+        width: 100% !important;
+    }
+}
+
+/* Preview size smaller */
+.invoice-sheet {
+    max-width: 760px !important;
+    min-height: 950px !important;
+    padding: 28px 36px !important;
+    font-size: 14px !important;
+}
+
+/* Header smaller */
+.invoice-title h3 {
+    font-size: 30px !important;
+}
+
+.invoice-title small {
+    font-size: 14px !important;
+}
+
+/* Info section smaller */
+.invoice-info-row {
+    min-height: 28px !important;
+}
+
+.invoice-info-column,
+.invoice-info-full {
+    padding: 3px 0 !important;
+}
+
+.invoice-label {
+    width: 105px !important;
+    min-width: 105px !important;
+}
+
+.invoice-colon {
+    width: 14px !important;
+    min-width: 14px !important;
+}
+
+/* Product table smaller */
+.invoice-product-section {
+    margin-top: 26px !important;
+    padding-top: 8px !important;
+}
+
+.invoice-product-table {
+    font-size: 14px !important;
+}
+
+.invoice-product-table thead th {
+    padding: 5px 4px !important;
+}
+
+.invoice-product-table tbody td {
+    padding: 4px 4px !important;
+}
+
+/* Remarks smaller */
+.invoice-remarks {
+    font-size: 14px !important;
+    padding: 6px 0 !important;
+}
+
+/* Bottom smaller */
+.invoice-bottom-left {
+    font-size: 14px !important;
+}
+
+.invoice-bottom-left .info-line {
+    margin-bottom: 8px !important;
+}
+
+/* Summary smaller */
+.invoice-summary-box {
+    font-size: 14px !important;
+}
+
+.summary-row {
+    grid-template-columns: 1fr 28px 105px !important;
+    padding: 2px 0 !important;
+}
+
+.summary-balance {
+    font-size: 15px !important;
+}
+
+/* Diagnosis payment one-page layout */ 
+.diagnosis-payment-page { margin-top: 6px !important; padding-left: 10px !important; padding-right: 10px !important; height: calc(100vh - 84px); overflow: hidden; } 
+.diagnosis-payment-page > .card { height: 100%; overflow: hidden; } 
+.diagnosis-payment-page > .card > .card.shadow-sm { margin-bottom: 4px !important; box-shadow: none !important; } 
+.diagnosis-payment-page > .card > .card.shadow-sm .card-header { padding: 6px 10px !important; } 
+.diagnosis-payment-page > .card > .card.shadow-sm h5 { font-size: 16px !important; } 
+.diagnosis-payment-workspace { display: grid !important; grid-template-columns: minmax(300px, .95fr) minmax(360px, 1.15fr) minmax(260px, 320px); grid-template-areas: "top product summary" "people product summary"; grid-template-rows: auto 1fr; gap: 6px; height: calc(100% - 42px); padding: 6px !important; overflow: hidden; } 
+.diagnosis-top-strip { grid-area: top; margin: 0 !important; min-width: 0; } 
+.diagnosis-people-section { grid-area: people; margin: 0 !important; min-width: 0; overflow: hidden; } 
+.diagnosis-product-section { grid-area: product; margin: 0 !important; min-width: 0; overflow: hidden; } 
+.diagnosis-summary-section { grid-area: summary; margin: 0 !important; min-width: 0; align-content: start; } 
+.diagnosis-payment-page .card { border-radius: 4px !important; } 
+.diagnosis-payment-page .card-header { padding: 5px 8px !important; } 
+.diagnosis-payment-page .card-header h6 { font-size: 13px !important; line-height: 1.2; } 
+.diagnosis-payment-page .card-body { padding: 6px !important; } 
+.diagnosis-payment-page .bg-light { background-color: #f8f9fa !important; } 
+.diagnosis-payment-page label { margin-bottom: 1px !important; font-size: 11px !important; line-height: 1.15; } 
+.diagnosis-payment-page .form-control, .diagnosis-payment-page .form-select { min-height: 27px !important; height: 27px !important; padding: 2px 6px !important; font-size: 12px !important; } 
+.diagnosis-payment-page .select2-container .select2-selection--single { min-height: 27px !important; height: 27px !important; } 
+.diagnosis-payment-page .select2-container--default .select2-selection--single .select2-selection__rendered { line-height: 25px !important; font-size: 12px !important; } 
+.diagnosis-payment-page .select2-container--default .select2-selection--single .select2-selection__arrow { height: 25px !important; } 
+.diagnosis-payment-page .row { --bs-gutter-x: .35rem; --bs-gutter-y: .25rem; } 
+.diagnosis-top-strip .card-body { padding: 5px !important; } 
+.diagnosis-top-strip .row { align-items: end; } 
+.diagnosis-top-strip .col-md-3 { width: 50%; flex: 0 0 50%; } 
+.diagnosis-people-section > .row, .diagnosis-product-section > .row { display: grid !important; grid-template-columns: 1fr !important; gap: 6px !important; } 
+.diagnosis-people-section .col-md-6, .diagnosis-product-section .col-md-6 { width: 100% !important; max-width: 100% !important; } 
+.diagnosis-people-section .card, .diagnosis-product-section .card { height: auto !important; } 
+.diagnosis-people-section .border-bottom { padding-bottom: 4px !important; margin-bottom: 4px !important; } 
+.diagnosis-people-section .card-body > .row > .col-md-4, .diagnosis-people-section .card-body > .row > .col-md-5, .diagnosis-people-section .card-body > .row > .col-md-8, .diagnosis-people-section .card-body > .row > .col-md-12 { margin-bottom: 0 !important; } 
+#productComboSettings { max-height: 180px; overflow-y: auto; border: 1px solid #dee2e6; padding: 6px; margin-bottom: 6px; border-radius: 4px; background: #fff; } 
+#toggleProductComboBtn { font-size: 11px !important; line-height: 1.2; min-width: 48px; } 
+.diagnosis-product-section #productSearch { margin-bottom: 4px; } 
+.diagnosis-product-section .product-list-scroll { max-height: 150px !important; overflow-y: auto; } 
+.diagnosis-product-section table { font-size: 12px !important; } 
+.diagnosis-product-section table th, .diagnosis-product-section table td { padding: 3px 4px !important; vertical-align: middle !important; } 
+.diagnosis-summary-section > .col-md-7 { width: 100% !important; max-width: 100% !important; flex: 0 0 100% !important; } 
+.diagnosis-summary-section .invoice-summary-compact { padding: 7px !important; } 
+.diagnosis-summary-section .invoice-summary-compact h6 { font-size: 13px !important; margin-bottom: 6px !important; padding-bottom: 4px !important; } 
+.diagnosis-summary-section .invoice-summary-compact .row { margin-bottom: 5px !important; } 
+.diagnosis-summary-section .invoice-summary-compact label { width: 42% !important; flex: 0 0 42% !important; } 
+.diagnosis-summary-section .invoice-summary-compact .col-md-8 { width: 58% !important; flex: 0 0 58% !important; } 
+.diagnosis-summary-section #saveAllBtn { width: 100%; padding: 5px 10px !important; } 
+@media (max-width: 1200px) { .diagnosis-payment-page { height: auto; overflow: visible; } .diagnosis-payment-workspace { display: block !important; height: auto; overflow: visible; } } 
+
+/* Diagnosis payment balanced 3-column layout */ 
+.diagnosis-payment-workspace { grid-template-columns: minmax(300px, 32%) minmax(360px, 38%) minmax(300px, 30%) !important; grid-template-areas: "top product list" "people product summary" !important; grid-template-rows: auto minmax(0, 1fr) !important; } 
+.diagnosis-product-section { display: contents !important; } 
+.diagnosis-product-section > .row { display: contents !important; } 
+.diagnosis-product-entry-panel { grid-area: product !important; width: 100% !important; max-width: 100% !important; min-width: 0 !important; height: 100% !important; } 
+.diagnosis-selected-products-panel { grid-area: list !important; width: 100% !important; max-width: 100% !important; min-width: 0 !important; height: 100% !important; } 
+.diagnosis-product-entry-panel > .card, .diagnosis-selected-products-panel > .card { height: 100% !important; } 
+.diagnosis-product-entry-panel > .card > .card-body { overflow: hidden; } 
+.diagnosis-selected-products-panel > .card > .card-body { min-height: 0 !important; overflow: hidden; } 
+.diagnosis-selected-products-panel .product-list-scroll { max-height: calc(100vh - 245px) !important; min-height: 150px; } 
+.diagnosis-summary-section { align-self: stretch; } 
+.diagnosis-summary-section .invoice-summary-compact { height: 100%; display: flex; flex-direction: column; justify-content: flex-start; } 
+.diagnosis-summary-section .invoice-summary-compact .text-center { margin-top: auto; } 
+@media (min-width: 1201px) { .diagnosis-product-section { margin: 0 !important; } } 
+
+/* Diagnosis payment no-gap final layout */ 
+.diagnosis-payment-page { height: calc(100vh - 70px) !important; padding: 6px !important; background: #f3f5f7; } 
+.diagnosis-payment-page > .card { border: 0 !important; box-shadow: none !important; background: transparent !important; } 
+.diagnosis-payment-page > .card > .card.shadow-sm { border-radius: 4px !important; margin-bottom: 3px !important; } 
+.diagnosis-payment-workspace { grid-template-columns: minmax(310px, 30%) minmax(370px, 39%) minmax(310px, 31%) !important; grid-template-areas: "top product list" "people product list" "people product summary" !important; grid-template-rows: auto minmax(0, 1fr) auto !important; gap: 3px !important; height: calc(100% - 36px) !important; padding: 0 !important; } 
+.diagnosis-payment-page .card { box-shadow: none !important; border: 1px solid #d9dee5 !important; } 
+.diagnosis-payment-page .card-header { min-height: 28px; padding: 4px 7px !important; } 
+.diagnosis-payment-page .card-body { padding: 5px !important; } 
+.diagnosis-payment-page .mb-4, .diagnosis-payment-page .mb-3, .diagnosis-payment-page .mb-2 { margin-bottom: 3px !important; } 
+.diagnosis-payment-page .row { --bs-gutter-x: .25rem; --bs-gutter-y: .2rem; } 
+.diagnosis-product-entry-panel, .diagnosis-selected-products-panel, .diagnosis-summary-section, .diagnosis-people-section, .diagnosis-top-strip { min-height: 0 !important; } 
+.diagnosis-people-section { align-self: stretch; } 
+.diagnosis-people-section > .row { height: 100%; grid-template-rows: auto auto !important; align-content: start; } 
+.diagnosis-people-section .card-body { padding: 5px !important; } 
+.diagnosis-product-entry-panel > .card { display: flex; flex-direction: column; } 
+.diagnosis-product-entry-panel > .card > .card-body { flex: 1 1 auto; overflow: hidden; } 
+.diagnosis-selected-products-panel > .card { display: flex; flex-direction: column; } 
+.diagnosis-selected-products-panel > .card > .card-body { flex: 1 1 auto; display: flex; min-height: 0 !important; } 
+.diagnosis-selected-products-panel .product-list-scroll { flex: 1 1 auto; width: 100%; max-height: none !important; min-height: 0 !important; overflow: auto; } 
+.diagnosis-summary-section { align-self: stretch; } 
+.diagnosis-summary-section .invoice-summary-compact { height: auto !important; padding: 6px !important; } 
+.diagnosis-summary-section .invoice-summary-compact h6 { margin-bottom: 4px !important; } 
+.diagnosis-summary-section .invoice-summary-compact .row { margin-bottom: 3px !important; } 
+.diagnosis-payment-page #addProductBtn, .diagnosis-payment-page #saveAllBtn { height: 28px; line-height: 1; font-size: 12px; } 
+.diagnosis-payment-page table th, .diagnosis-payment-page table td { white-space: nowrap; } 
+
+/* Diagnosis payment two-column layout */ 
+.diagnosis-payment-workspace { grid-template-columns: minmax(420px, 1fr) minmax(420px, 1fr) !important; grid-template-areas: "top product" "people product" ". summary" !important; grid-template-rows: auto auto auto !important; gap: 4px !important; align-content: start !important; } 
+.diagnosis-product-section { grid-area: product !important; display: block !important; min-height: 0 !important; overflow: visible !important; } 
+.diagnosis-product-section > .row { display: grid !important; grid-template-columns: 1fr !important; grid-template-rows: auto auto !important; gap: 4px !important; min-height: 0 !important; overflow: visible !important; } 
+.diagnosis-product-entry-panel { grid-area: auto !important; height: auto !important; } 
+.diagnosis-selected-products-panel { grid-area: auto !important; height: auto !important; min-height: 0 !important; } 
+.diagnosis-product-entry-panel > .card { height: auto !important; } 
+.diagnosis-selected-products-panel > .card { height: auto !important; min-height: 0 !important; } 
+.diagnosis-selected-products-panel .product-list-scroll { max-height: 185px !important; min-height: 0 !important; overflow: auto !important; } 
+.diagnosis-summary-section { grid-area: summary !important; margin-top: 0 !important; align-self: start !important; } 
+.diagnosis-summary-section .invoice-summary-compact .text-center { margin-top: 4px !important; } 
+
+/* Diagnosis payment summary inside selected-list panel */ 
+.diagnosis-payment-workspace { height: auto !important; overflow: visible !important; } 
+.diagnosis-selected-products-panel > .diagnosis-summary-section { display: block !important; width: 100% !important; margin: 4px 0 0 0 !important; } 
+.diagnosis-selected-products-panel > .diagnosis-summary-section > .col-md-7 { width: 100% !important; max-width: 100% !important; padding: 0 !important; } 
+
+/* Diagnosis payment independent left/right columns */ 
+.diagnosis-payment-workspace { grid-template-areas: "left product" !important; grid-template-rows: auto !important; align-items: start !important; } 
+.diagnosis-left-panel { grid-area: left !important; display: grid !important; grid-template-rows: auto auto !important; gap: 4px !important; align-content: start !important; min-width: 0 !important; } 
+.diagnosis-left-panel .diagnosis-top-strip, .diagnosis-left-panel .diagnosis-people-section { margin: 0 !important; align-self: start !important; } 
+.diagnosis-left-panel .diagnosis-people-section > .row { height: auto !important; } 
+.diagnosis-product-section { align-self: start !important; } 
+
+/* Diagnosis payment align patient card with product card */ 
+.diagnosis-left-panel .diagnosis-people-section { margin-top: -10px !important; } 
+
+/* Diagnosis payment selected product list below reference matrix */ 
+.diagnosis-payment-workspace { grid-template-columns: minmax(420px, 1fr) minmax(420px, 1fr) !important; grid-template-areas: "left product" !important; } 
+.diagnosis-left-panel { grid-template-rows: auto auto auto !important; } 
+.diagnosis-left-panel > .diagnosis-selected-products-panel { display: block !important; width: 100% !important; max-width: 100% !important; margin: 4px 0 0 0 !important; } 
+.diagnosis-left-panel > .diagnosis-selected-products-panel > .card { width: 100% !important; height: auto !important; } 
+.diagnosis-left-panel > .diagnosis-selected-products-panel .product-list-scroll { max-height: 160px !important; overflow: auto !important; } 
+.diagnosis-product-section > .diagnosis-summary-section { display: block !important; width: 100% !important; margin: 4px 0 0 0 !important; } 
+.diagnosis-product-section > .diagnosis-summary-section > .col-md-7 { width: 100% !important; max-width: 100% !important; padding: 0 !important; } 
+
+/* Diagnosis payment fixed left column order */ 
+.diagnosis-payment-workspace { display: grid !important; grid-template-columns: minmax(420px, 1fr) minmax(420px, 1fr) !important; grid-template-areas: "left product" !important; gap: 4px !important; } 
+.diagnosis-left-panel { display: flex !important; flex-direction: column !important; gap: 4px !important; grid-area: left !important; } 
+.diagnosis-left-panel > .diagnosis-top-strip { order: 1 !important; } 
+.diagnosis-left-panel > .diagnosis-people-section { order: 2 !important; } 
+.diagnosis-left-panel > .diagnosis-selected-products-panel { order: 3 !important; grid-area: auto !important; flex: 0 0 auto !important; } 
+.diagnosis-product-section { grid-area: product !important; } 
+
+/* Diagnosis payment product search and top strip sizing */ 
+.diagnosis-left-panel > .diagnosis-top-strip { width: 100% !important; } 
+.diagnosis-left-panel > .diagnosis-top-strip .card { width: 100% !important; } 
+.diagnosis-left-panel > .diagnosis-top-strip .row { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 4px !important; } 
+.diagnosis-left-panel > .diagnosis-top-strip .col-md-3 { width: 100% !important; max-width: 100% !important; flex: none !important; } 
+.diagnosis-payment-page .select2-container--open .select2-dropdown { min-width: 0 !important; max-width: calc(50vw - 40px) !important; width: auto !important; } 
+.diagnosis-payment-page .select2-dropdown .select2-search__field { width: 100% !important; box-sizing: border-box !important; } 
+.diagnosis-payment-page .product-search-header, .diagnosis-payment-page .product-search-row { grid-template-columns: minmax(150px, 1.7fr) minmax(120px, 1.2fr) 60px 80px !important; column-gap: 8px !important; } 
+
+/* Diagnosis payment keep product dropdown inside product panel */ 
+.diagnosis-product-entry-panel { overflow: visible !important; } 
+.diagnosis-product-entry-panel .select2-container { width: 100% !important; max-width: 100% !important; } 
+.diagnosis-product-entry-panel .select2-container--open { left: 0 !important; width: 100% !important; min-width: 0 !important; max-width: 100% !important; } 
+.select2-dropdown.diagnosis-product-dropdown { width: 100% !important; min-width: 0 !important; max-width: 100% !important; box-sizing: border-box !important; } 
+.select2-dropdown.diagnosis-product-dropdown .select2-search__field { width: 100% !important; max-width: 100% !important; box-sizing: border-box !important; } 
+.select2-dropdown.diagnosis-product-dropdown .select2-results, .select2-dropdown.diagnosis-product-dropdown .select2-results__options { max-width: 100% !important; overflow-x: hidden !important; } 
+
+/* Diagnosis payment product dropdown exact card width */ 
+.diagnosis-product-entry-panel > .card { position: relative !important; } 
+.diagnosis-product-entry-panel > .card .select2-container--open { left: 0 !important; right: 0 !important; width: 100% !important; min-width: 100% !important; max-width: 100% !important; } 
+.diagnosis-product-entry-panel > .card .select2-dropdown.diagnosis-product-dropdown { width: 100% !important; min-width: 100% !important; max-width: 100% !important; } 
+
+/* Diagnosis payment reference dropdown exact card width */ 
+.diagnosis-people-section .card { position: relative !important; } 
+.diagnosis-people-section .card .select2-container--open { left: 0 !important; right: 0 !important; width: 100% !important; min-width: 100% !important; max-width: 100% !important; } 
+.select2-dropdown.diagnosis-reference-dropdown { width: 100% !important; min-width: 100% !important; max-width: 100% !important; box-sizing: border-box !important; } 
+.select2-dropdown.diagnosis-reference-dropdown .select2-search__field { width: 100% !important; max-width: 100% !important; box-sizing: border-box !important; } 
+.diagnosis-people-section .card > .select2-container { left: 0 !important; right: 0 !important; width: 100% !important; min-width: 100% !important; max-width: 100% !important; } 
+.diagnosis-people-section .card > .select2-container .diagnosis-reference-dropdown { width: 100% !important; min-width: 100% !important; max-width: 100% !important; } 
+
+/* Diagnosis payment keep doctor/SR dropdown above selected list */ 
+.diagnosis-left-panel > .diagnosis-people-section { position: relative !important; z-index: 30 !important; } 
+.diagnosis-left-panel > .diagnosis-selected-products-panel { position: relative !important; z-index: 1 !important; } 
+.select2-dropdown.diagnosis-reference-dropdown { z-index: 9999 !important; } 
+
+/* Diagnosis payment prevent reference dropdown clipping */ 
+.diagnosis-left-panel, .diagnosis-left-panel > .diagnosis-people-section, .diagnosis-left-panel > .diagnosis-people-section > .row, .diagnosis-left-panel > .diagnosis-people-section .card, .diagnosis-left-panel > .diagnosis-people-section .card-body { overflow: visible !important; } 
+.diagnosis-left-panel > .diagnosis-people-section .card { z-index: 40 !important; } 
+.diagnosis-left-panel > .diagnosis-people-section .card-body { position: relative !important; z-index: 41 !important; } 
+.diagnosis-left-panel > .diagnosis-selected-products-panel .card { position: relative !important; z-index: 1 !important; } 
+.diagnosis-reference-provider-panel .border-bottom > .col-md-6 { width: 50% !important; max-width: 50% !important; flex: 0 0 50% !important; } 
+.diagnosis-people-section .diagnosis-product-entry-panel { width: 100% !important; max-width: 100% !important; flex: 0 0 100% !important; } 
+.diagnosis-product-payment-row > .col-md-6 { width: 50% !important; max-width: 50% !important; flex: 0 0 50% !important; } 
+
+/* Diagnosis invoice preview modal polish */ 
+ 
+
+/* Diagnosis invoice preview modal polish */
+
+#transactionPreviewModal .modal-dialog { max-width:650px; margin:12px auto; }
+#transactionPreviewModal .modal-dialog-scrollable { height:auto !important; max-height:calc(100vh - 24px) !important; }
+#transactionPreviewModal .modal-dialog-scrollable .modal-content { max-height:calc(100vh - 24px) !important; height:auto !important; }
+#transactionPreviewModal .modal-dialog-scrollable .modal-body { overflow-y:auto !important; height:auto !important; min-height:0 !important; }
+#transactionPreviewModal .modal-body { padding:10px !important; background:#ececec; }
+
+#transactionPreviewModal .invoice-sheet.compact-invoice { width:148mm !important; max-width:148mm !important; height:auto !important; min-height:0 !important; margin:0 auto !important; padding:24px 28px !important; background:#fff !important; color:#000 !important; font-family:Arial,Helvetica,sans-serif !important; font-size:12px !important; line-height:1.15 !important; box-sizing:border-box !important; box-shadow:none !important; overflow:visible !important; display:block !important; }
+
+#transactionPreviewModal .invoice-heading { text-align:center; margin-bottom:8px; }
+#transactionPreviewModal .invoice-heading .brand-name { font-size:22px; line-height:1.05; font-weight:600; }
+#transactionPreviewModal .invoice-heading .brand-address { font-size:10px; line-height:1.2; margin-top:2px; }
+#transactionPreviewModal .invoice-heading .brand-phone { font-size:10px; line-height:1.2; margin-top:1px; }
+
+#transactionPreviewModal .invoice-info { margin-bottom:10px; }
+
+#transactionPreviewModal .info-row { display:grid; grid-template-columns:1fr 1fr; border-bottom:1px dashed #d0d0d0; }
+
+#transactionPreviewModal .info-row > div { display:grid; grid-template-columns:82px 10px 1fr; align-items:center; min-height:23px; font-size:10px; line-height:1; }
+
+#transactionPreviewModal .info-row strong { font-weight:700; }
+#transactionPreviewModal .info-row span { text-align:center; }
+#transactionPreviewModal .info-row em { font-style:normal; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+#transactionPreviewModal .invoice-products { border-top:2px solid #222; border-bottom:0; padding:3px 0 1px; margin-bottom:3px; }
+
+#transactionPreviewModal .invoice-products table { width:100%; border-collapse:collapse; table-layout:fixed; font-size:9.5px; }
+
+#transactionPreviewModal .invoice-products th { padding:3px 3px; border-bottom:1px dashed #777; text-align:left; font-weight:700; line-height:1; }
+
+#transactionPreviewModal .invoice-products td { padding:2px 3px; border:0; height:17px; line-height:1; vertical-align:middle; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
+
+#transactionPreviewModal .invoice-products .sl { width:25px; }
+#transactionPreviewModal .invoice-products .pid { width:62px; }
+#transactionPreviewModal .invoice-products .qty { width:35px; text-align:center; }
+#transactionPreviewModal .invoice-products .money-col { width:58px; text-align:right; }
+
+#transactionPreviewModal .invoice-remarks { border-top:0; border-bottom:2px solid #222; padding:2px 0 4px; margin-bottom:6px; font-size:10px; line-height:1; }
+
+#transactionPreviewModal .invoice-top-meta { min-width: 0; flex: 1 1 auto; }
+#transactionPreviewModal .invoice-barcode-row { display:flex; gap:2px; align-items:flex-start; justify-content:flex-end; flex-wrap:nowrap; margin-left:auto; width:max-content; padding-right:0; }
+#transactionPreviewModal .invoice-barcode-block { min-width: 92px; text-align:center; }
+#transactionPreviewModal .barcode-label { display:block; font-size:8px; line-height:1; margin-bottom:1px; font-weight:600; }
+#transactionPreviewModal .invoice-barcode-slot { display:block; min-height:22px; overflow:hidden; text-align:center; padding-left:0; }
+
+#transactionPreviewModal .invoice-barcode-slot svg { display:block; max-width:100%; height:22px; margin:0 auto !important; transform:none; }
+
+#transactionPreviewModal .payment-status-box { width:100%; min-width:0; min-height:72px; border:3px solid #0d6efd; color:#0d6efd; display:flex; align-items:center; justify-content:center; font-size:32px; font-weight:700; letter-spacing:0; padding:10px 14px; box-sizing:border-box; border-radius:6px; }
+#transactionPreviewModal .payment-status-box.status-due { border-color:#dc3545; color:#dc3545; }
+#transactionPreviewModal .payment-status-box.status-paid { border-color:#0d6efd; color:#0d6efd; }
+
+#transactionPreviewModal .invoice-bottom { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+
+#transactionPreviewModal .invoice-bottom-left { font-size:10px; line-height:1.2; }
+
+#transactionPreviewModal .invoice-bottom-left div { margin-bottom:5px; }
+
+#transactionPreviewModal .invoice-summary { font-size:10px; line-height:1; }
+
+#transactionPreviewModal .invoice-summary > div { display:grid; grid-template-columns:1fr 12px 60px; align-items:center; min-height:19px; }
+
+#transactionPreviewModal .invoice-summary i { font-style:normal; text-align:center; }
+
+#transactionPreviewModal .invoice-summary strong { text-align:right; font-weight:400; }
+
+#transactionPreviewModal .invoice-summary .summary-net { border-top:2px dashed #222; font-weight:700; }
+
+#transactionPreviewModal .invoice-summary .summary-net strong { font-weight:700; }
+
+#transactionPreviewModal .invoice-summary .summary-balance { border-top:2px dashed #222; border-bottom:2px solid #222; font-weight:700; }
+
+#transactionPreviewModal .invoice-summary .summary-balance strong { font-weight:700; }
+
+#transactionPreviewModal .modal-header { padding:6px 10px; }
+
+#transactionPreviewModal .modal-header .modal-title { font-size:14px; }
+
+#transactionPreviewModal .modal-footer { padding:6px 10px; }
+
+#transactionPreviewModal .modal-footer .btn { padding:4px 9px; font-size:10px; }

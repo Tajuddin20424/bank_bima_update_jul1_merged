@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Biochemistry Add Result{% endblock %}
+
+{% block content %}
+<input type="hidden" id="global_csrf" value="{{ csrf_token }}">
+
+<div class="container-fluid py-3">
+    <div class="card shadow-sm mb-3">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Biochemistry - Add Result</h5>
+            <a href="{% url 'diagnosis_biochemistry_result' %}" class="btn btn-sm btn-light">Back To List</a>
+        </div>
+        <div class="card-body">
+            <div class="row g-2 align-items-end mb-3">
+                <div class="col-md-4 position-relative">
+                    <label class="fw-semibold">Transaction / Receipt ID</label>
+                    <input type="text" id="invoiceSearch" class="form-control" placeholder="Enter transaction id / receipt" autocomplete="off">
+                    <div id="invoiceSearchDropdown" class="bio-invoice-dropdown d-none"></div>
+                </div>
+                <div class="col-md-2">
+                    <button type="button" id="loadInvoiceBtn" class="btn btn-primary w-100">Search</button>
+                </div>
+                <div class="col-md-6">
+                    <div class="border rounded p-2 bg-light">
+                        <div><b>Patient:</b> <span id="patientNameText">-</span> | <b>Doctor:</b> <span id="doctorNameText">-</span></div>
+                        <div><b>Receipt:</b> <span id="receiptNo">-</span> | <b>Age:</b> <span id="patientAge">-</span> | <b>Sex:</b> <span id="patientSexText">-</span></div>
+                        <div><b>Phone:</b> <span id="patientPhoneText">-</span> | <b>Address:</b> <span id="patientAddressText">-</span></div>
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" id="patientName">
+            <input type="hidden" id="doctorName">
+            <input type="hidden" id="labNo">
+            <input type="hidden" id="reportDate">
+            <input type="hidden" id="patientAgeY">
+            <input type="hidden" id="patientAgeM">
+            <input type="hidden" id="patientAgeD">
+            <input type="hidden" id="patientSex">
+            <input type="hidden" id="patientPhone">
+            <input type="hidden" id="patientAddress">
+
+            <input type="hidden" id="invoiceId">
+
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="fw-semibold">Investigation List</label>
+                    <div class="table-responsive" style="max-height:220px; overflow:auto;">
+                        <table class="table table-bordered table-sm">
+                            <thead class="table-dark"><tr><th>Code</th><th>Test Name</th><th>Select</th></tr></thead>
+                            <tbody id="invoiceTestBody"><tr><td colspan="3" class="text-center text-muted">Search transaction</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="d-flex justify-content-between align-items-center gap-2">
+                        <label class="fw-semibold">Result Entry</label>
+                        <div id="selectedTestName" class="d-flex flex-wrap gap-1 justify-content-end">Select test</div>
+                    </div>
+                    <div class="table-responsive" style="max-height:460px; overflow:auto;">
+                        <table class="table table-bordered table-sm align-middle">
+                            <thead class="table-dark">
+                                <tr><th>Test Head</th><th>Test Name</th><th>Result</th><th>Unit</th><th>Normal Result</th></tr>
+                            </thead>
+                            <tbody id="resultEntryBody"><tr><td colspan="5" class="text-center text-muted">No result rows loaded</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-end gap-2 mt-3">
+                <button type="button" id="saveBiochemistryBtn" class="btn btn-success px-4">Save & Preview</button>
+                <button type="button" id="resetBiochemistryBtn" class="btn btn-secondary px-4">Reset</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style> 
+    .bio-invoice-dropdown { position: absolute; top: 100%; left: 12px; right: 12px; z-index: 1050; background: #fff; border: 1px solid #ced4da; border-radius: 4px; box-shadow: 0 4px 12px rgba(0,0,0,.12); max-height: 240px; overflow-y: auto; } 
+    .bio-invoice-option { padding: 8px 10px; cursor: pointer; border-bottom: 1px solid #edf0f2; } 
+    .bio-invoice-option:hover, .bio-invoice-option.active { background: #e9f4ff; } 
+    .bio-invoice-meta { display: block; font-size: 12px; color: #6c757d; } 
+    .bio-test-row { cursor: pointer; } 
+    .bio-test-row.active { background: #dff3e8; font-weight: 700; } 
+    .bio-preview-shell { min-height: 76vh; background: #eef0f3; padding: 26px; overflow: auto; } 
+    .bio-report-preview { width: 794px; min-height: 1123px; margin: 0 auto; background: #fff; color: #111; font-family: Arial, sans-serif; font-size: 14px; line-height: 1.35; padding: 50px 50px; box-shadow: 0 8px 28px rgba(0,0,0,.18); box-sizing: border-box; } 
+    @media (max-width: 900px) { .bio-preview-shell { padding: 14px; } .bio-report-preview { width: 100%; min-height: 0; padding: 28px 20px; } } 
+    .bio-report-head { display: grid; grid-template-columns: 1.35fr 1fr 1.15fr; gap: 7px 18px; border-bottom: 1px solid #111; padding-bottom: 10px; margin-bottom: 10px; font-size: 13.5px; } 
+    .bio-report-head .bio-full { grid-column: 1 / 4; } 
+    .bio-report-preview h4 { text-align: center; font-size: 17px; font-weight: 700; text-decoration: underline; margin: 10px 0 10px; letter-spacing: .3px; } 
+    .bio-report-preview h5 { text-align: center; font-size: 16px; font-weight: 400; margin: 0 0 8px; } 
+    .bio-report-preview table { width: 100%; border-collapse: collapse; table-layout: fixed; margin-top: 4px; } 
+    .bio-report-preview th { text-align: left; text-decoration: underline; padding: 5px 8px 6px; border-bottom: 1px solid #222; font-size: 13.5px; } 
+    .bio-report-preview td { vertical-align: top; padding: 5px 8px; } 
+    .bio-report-preview th:nth-child(2), .bio-report-preview td:nth-child(2) { text-align: right; padding-right: 12px; } 
+    .bio-report-preview th:nth-child(3), .bio-report-preview td:nth-child(3) { text-align: left; padding-left: 12px; } 
+    .bio-report-preview .bio-test-title td { font-weight: 700; text-decoration: underline; padding-top: 12px; padding-bottom: 4px; } 
+</style>
+
+<div class="modal fade" id="biochemistryPreviewModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">Biochemistry Report Preview</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div id="previewFrame" class="bio-preview-shell"></div>
+            </div>
+            <div class="modal-footer">
+                <a id="downloadPreviewBtn" class="btn btn-success" href="#" target="_blank">Download</a>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/diagnosis/biochemistry_result.js' %}"></script>
+{% endblock %}

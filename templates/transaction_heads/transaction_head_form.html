@@ -1,0 +1,183 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{% if edit_mode %}Edit Transaction Head{% else %}New Transaction Head{% endif %}{% endblock %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Teacher</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+  <div class="container py-4">
+    <div class="row">
+      
+      <!-- Left: Add Subject Form -->
+
+      <div class="col-md-6">
+        <div class="card shadow-sm p-4">
+          <h2>{% if edit_mode %}Edit Transaction Head{% else %}New Transaction Head{% endif %}</h2>
+          <form
+            id="addForm"
+            method="POST"
+            data-edit-id="{{ edit_transaction.id|default:'' }}"
+            data-main-head-id="{{ edit_transaction.tran_main_head_id|default:'' }}"
+            data-method="{{ edit_transaction.tran_method|default:'' }}"
+            data-group-id="{{ edit_transaction.group_id|default:'' }}"
+            data-category-id="{{ edit_transaction.category_id|default:'' }}"
+          >
+            {% csrf_token %}
+
+              <!-- <input type="hidden" id="tran_head_id"> -->
+              <input type="hidden" id="tran_head_id" value="{{ edit_transaction.id|default:'' }}">
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Transaction Main Heads</label>
+                <select id="transactionmainheads" name="transactionmainheads" class="form-control">
+                  {% if edit_mode %}<option value="{{ edit_transaction.tran_main_head_id }}" selected>{{ edit_transaction.tran_main_head_name }}</option>{% endif %}
+                </select>
+              </div>
+
+              <div class="col-md-4">
+                  <label class="fw-semibold">Transaction Method</label>
+                  <select id="transaction_method" name="transaction_method" class="form-control">
+                    {% if edit_mode %}<option value="{{ edit_transaction.tran_method }}" selected>{{ edit_transaction.tran_method }}</option>{% endif %}
+                  </select>
+              </div>
+              <div class="col-md-4">
+                  <label class="fw-semibold">Transaction Group</label>
+                  <select id="tran_group" name="tran_group" class="form-control">
+                    {% if edit_mode %}<option value="{{ edit_transaction.group_id }}" selected>{{ edit_transaction.group_name }}</option>{% endif %}
+                  </select>
+              </div>
+              {% comment %} <div class="col-md-4">
+                  <label class="fw-semibold">Item Categories</label>
+                  <select id="item_categories" name="item_categories" class="form-control">
+                  </select>
+              </div> {% endcomment %}
+
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Transaction Category</label>
+                  <select id="transaction_category" name="category_id" class="form-control">
+                      {% if edit_mode %}
+                        <option value="{{ edit_transaction.category_id }}" selected>{{ edit_transaction.category_name }}</option>
+                      {% else %}
+                        <option value="">Select Category</option>
+                      {% endif %}
+                  </select>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label fw-semibold">CP</label>
+                <input type="text" id="tran_head_cp" name="tran_head_cp" class="form-control" placeholder="Enter full name" value="{{ edit_transaction.cp|default:'' }}">
+                <span class="text-danger small name_error"></span>
+              </div>
+              <div class="mb-3">
+                <label class="form-label fw-semibold">MRP/Rate</label>
+                <input type="text" id="tran_head_mrp" name="tran_head_mrp" class="form-control" placeholder="Enter full name" value="{{ edit_transaction.mrp|default:'' }}">
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Transaction Head</label>
+                <input type="text" id="tran_head_name" name="tran_head_name" class="form-control" placeholder="Enter full name" value="{{ edit_transaction.tran_head_name|default:'' }}">
+                <span class="text-danger small name_error"></span>
+              </div>
+
+              <div class="mb-3" style="display:none;">
+                <label class="form-label fw-semibold">Status</label>
+                <select name="status" class="form-select">
+                  <option value="">Select Status</option>
+                  <option value="Active">Active</option>
+                  <option value="Inactive">Inactive</option>
+                </select>
+                <span class="text-danger small status_error"></span>
+              </div>
+
+            
+            <div class="d-flex justify-content-center mt-3">
+              <button type="submit" id="saveBtn" class="btn btn-primary me-2 px-4">
+                {% if edit_mode %}🔄 Update{% else %}💾 Save{% endif %}
+              </button>
+              <button type="button" class="btn btn-success px-4" onclick="history.back()">
+                  ⬅️ Back
+              </button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="card shadow-sm p-4">
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Transaction Main Heads</label>
+          <select class="transactionmainheads form-control"></select>
+
+          </select>
+        </div>          
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Search Transaction Head Name</label>
+          <input type="text" id="search_tran_head" name="search_tran_head" class="form-control" placeholder="Enter full name">
+          <span class="text-danger small name_error"></span>
+        </div>
+
+          <div class="table-responsive" style="max-height: 800px; overflow-y: auto;" id="tableContainerRight">
+            <table class="table table-bordered table-striped table-hover table-sm custom-border full-width-table" id="staffTableRight">
+              <thead class="table-dark" style="position: sticky; top: 0; z-index: 2;">
+                <tr>
+                    <th>#</th>
+                    <th>Transaction Main Head</th>
+                    <th>Tran Method</th>
+                    <th>Transaction Group</th>
+                    <th>Category</th>
+                    <th>Transaction Head</th>
+                    <th>CP</th>
+                    <th>MRP/Rate</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="transactionHeadTableBody">    
+                  
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>  
+
+</body>
+</html>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="{% static 'js/save_csrftoken.js' %}"></script>
+<!-- <script src="{% static 'js/transaction_with_user/transaction_with_user.js' %}"></script> -->
+<!-- <script src="{% static 'js/transaction_with_user/get_page_init_add_transaction_with_user.js' %}"></script> -->
+
+<script src="{% static 'js/combo_load/transaction_main_heads_combo.js' %}"></script>
+<script src="{% static 'js/combo_load/transaction_method_combo.js' %}"></script>
+<!-- <script src="{% static 'js/combo_load/transaction_with_method_combo.js' %}"></script> -->
+<!-- <script src="{% static 'js/combo_load/transaction_with_combo.js' %}"></script> -->
+<script src="{% static 'js/combo_load/transaction_group_combo.js' %}"></script>
+<!-- <script src="{% static 'js/combo_load/transaction_with_user_combo.js' %}"></script> -->
+<script src="{% static 'js/combo_load/user_role_combo.js' %}"></script>
+
+<script src="{% static 'js/combo_load/transaction_category_combo.js' %}"></script>
+
+<script src="{% static 'js/transaction_heads/load_nested_combo.js' %}"></script>
+<script src="{% static 'js/transaction_heads/transaction_heads.js' %}"></script>
+
+{% endblock %}
+
+

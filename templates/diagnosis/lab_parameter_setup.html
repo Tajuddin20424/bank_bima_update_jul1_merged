@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Lab Parameter Setup{% endblock %}
+
+{% block content %}
+<input type="hidden" id="global_csrf" value="{{ csrf_token }}">
+
+<div class="container-fluid py-3">
+    <div class="row g-3">
+        <div class="col-lg-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Lab Report Parameter Setup</h5>
+                </div>
+                <div class="card-body">
+                    <form id="labParameterForm">
+                        {% csrf_token %}
+                        <input type="hidden" id="lab_parameter_id" name="id">
+
+                        <div class="mb-2">
+                            <label class="form-label fw-semibold">Group <span class="text-danger">*</span></label>
+                            <select id="group_id" name="group_id" class="form-control" required>
+                                <option value="">-- Select Group --</option>
+                                {% for group in groups %}
+                                    <option value="{{ group.id }}">{{ group.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="mb-2">
+                            <label class="form-label fw-semibold">Category <span class="text-danger">*</span></label>
+                            <select id="category_id" name="category_id" class="form-control" required>
+                                <option value="">-- Select Group First --</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-2">
+                            <label class="form-label fw-semibold">Transaction Head</label>
+                            <select id="head_id" name="head_id" class="form-control">
+                                <option value="">-- Optional --</option>
+                            </select>
+                        </div>
+
+                        <div class="row g-2">
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold">Serial</label>
+                                <input type="number" id="serial" name="serial" class="form-control" value="0">
+                            </div>
+                            <div class="col-md-8">
+                                <label class="form-label fw-semibold">Title <span class="text-danger">*</span></label>
+                                <input type="text" id="title" name="title" class="form-control" placeholder="CBC / Biochemistry" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-2 mt-2">
+                            <label class="form-label fw-semibold">Title Code</label>
+                            <input type="text" id="title_code" name="title_code" class="form-control" placeholder="PLG / CBC">
+                        </div>
+
+                        <div class="mb-2 mt-2">
+                            <label class="form-label fw-semibold">Investigation <span class="text-danger">*</span></label>
+                            <input type="text" id="investigation" name="investigation" class="form-control" placeholder="White Blood Cell" required>
+                        </div>
+
+                        <div class="mb-2">
+                            <label class="form-label fw-semibold">Investigation Code</label>
+                            <input type="text" id="investigation_code" name="investigation_code" class="form-control" placeholder="FBS / WBC">
+                        </div>
+
+                        <div class="mb-2">
+                            <label class="form-label fw-semibold">Unit</label>
+                            <input type="text" id="unit" name="unit" class="form-control" placeholder="cells/uL">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Reference Range</label>
+                            <textarea id="reff_range" name="reff_range" class="form-control" rows="3" placeholder="Male: 4.5-5.9 | Female: 4.1-5.1"></textarea>
+                        </div>
+
+                        <div class="d-flex gap-2 justify-content-center">
+                            <button type="submit" id="saveLabParameterBtn" class="btn btn-success px-4">Save</button>
+                            <button type="button" id="resetLabParameterBtn" class="btn btn-secondary px-4">Reset</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Saved Parameters</h5>
+                    <span class="badge bg-light text-dark">Investigation wise template</span>
+                </div>
+                <div class="card-body">
+                    <div class="row g-2 mb-3">
+                        <div class="col-md-3">
+                            <select id="filter_group_id" class="form-control">
+                                <option value="">All Group</option>
+                                {% for group in groups %}
+                                    <option value="{{ group.id }}">{{ group.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select id="filter_category_id" class="form-control">
+                                <option value="">All Category</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select id="filter_head_id" class="form-control">
+                                <option value="">All Head</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="text" id="search_lab_parameter" class="form-control" placeholder="Search parameter">
+                        </div>
+                    </div>
+
+                    <div class="table-responsive" style="max-height: 640px; overflow-y: auto;">
+                        <table class="table table-bordered table-striped table-hover table-sm align-middle">
+                            <thead class="table-dark" style="position: sticky; top: 0; z-index: 2;">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Group</th>
+                                    <th>Category</th>
+                                    <th>Head</th>
+                                    <th>SL</th>
+                                    <th>Title</th>
+                                    <th>Title Code</th>
+                                    <th>Investigation</th>
+                                    <th>Inv Code</th>
+                                    <th>Unit</th>
+                                    <th>Reference Range</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="labParameterTableBody">
+                                <tr><td colspan="12" class="text-center text-muted py-4">Loading...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/diagnosis/lab_parameter_setup.js' %}"></script>
+{% endblock %}

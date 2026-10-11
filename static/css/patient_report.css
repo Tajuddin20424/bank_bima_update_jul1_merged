@@ -1,0 +1,983 @@
+/* =========================================================
+   Patient Report Builder CSS
+   File: static/css/patient_report.css
+========================================================= */
+
+/* =========================
+   Font
+========================= */
+@font-face {
+    font-family: "SutonnyMJ";
+    src: url("../fonts/SutonnyMJ.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* =========================
+   Variables
+========================= */
+:root {
+    --paper-width: 794px;
+    --paper-height: 1123px;
+    --detail-font-size: 14px;
+    --modal-scale: 0.72;
+
+    --page-bg-1: #f5f7fa;
+    --page-bg-2: #eef2f6;
+
+    --white: #ffffff;
+    --text-dark: #202428;
+    --text-muted: #6c747d;
+    --border-soft: #e6ebf0;
+    --border-mid: #dce2e8;
+    --focus-blue: #86b7fe;
+}
+
+/* =========================
+   Global
+========================= */
+body,
+.report-page,
+label,
+button,
+select,
+option,
+h1, h2, h3, h4, h5, h6,
+table,
+th,
+td,
+input,
+textarea {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* =========================
+   Page Design
+========================= */
+.report-page {
+    min-height: calc(100vh - 95px);
+    background: linear-gradient(180deg, var(--page-bg-1), var(--page-bg-2));
+    padding: 24px 32px;
+}
+
+.form-shell {
+    width: 100%;
+    max-width: 1480px;
+    margin: 0 auto;
+    background: var(--white);
+    border: 1px solid var(--border-soft);
+    border-radius: 20px;
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.07);
+    padding: 26px;
+}
+
+.form-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 18px;
+    margin-bottom: 22px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #edf0f3;
+}
+
+.page-title {
+    font-size: 30px;
+    font-weight: 850;
+    color: var(--text-dark);
+    margin: 0;
+}
+
+.page-subtitle {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-top: 5px;
+}
+
+.top-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.top-actions .btn {
+    border-radius: 10px;
+    font-weight: 750;
+    min-height: 40px;
+}
+
+/* =========================
+   Form
+========================= */
+.form-label,
+label {
+    font-size: 14px;
+    font-weight: 750;
+    color: #3d4147;
+    margin-bottom: 6px;
+}
+
+.form-control,
+.form-select {
+    min-height: 44px;
+    border-radius: 10px;
+    border: 1px solid var(--border-mid);
+    font-size: 15px;
+    color: #222;
+    background: var(--white);
+}
+
+.form-control:focus,
+.form-select:focus,
+.rich-editor:focus,
+.template-param-field:focus,
+.rx-medicine-tools select:focus,
+.rx-medicine-tools input:focus {
+    border-color: var(--focus-blue);
+    box-shadow: 0 0 0 0.16rem rgba(13, 110, 253, 0.12);
+    outline: none;
+}
+
+#reportWorkArea {
+    display: none;
+}
+
+.patient-row {
+    display: grid;
+    grid-template-columns: minmax(260px, 430px) 1fr;
+    gap: 18px;
+    align-items: end;
+    margin-bottom: 20px;
+}
+
+.section-card {
+    border: 1px solid #e7ebef;
+    border-radius: 16px;
+    background: #fbfcfd;
+    padding: 18px;
+    margin-bottom: 18px;
+}
+
+.section-heading {
+    font-size: 18px;
+    font-weight: 850;
+    color: var(--text-dark);
+    margin-bottom: 14px;
+}
+
+#headerFields {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(160px, 1fr));
+    gap: 14px;
+}
+
+/* =========================
+   Report Body
+========================= */
+.report-body-top {
+    display: grid;
+    grid-template-columns: minmax(220px, 320px) 1fr;
+    gap: 14px;
+    align-items: end;
+    margin-bottom: 16px;
+}
+
+.bijoy-control-panel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 12px 14px;
+    background: #f8f9fa;
+    border: 1px solid #e3e7eb;
+    border-radius: 14px;
+}
+
+.bijoy-control-text {
+    font-size: 14px;
+    color: #454b52;
+}
+
+#bijoyModeBtn {
+    border-radius: 999px;
+    font-weight: 850;
+    padding: 8px 18px;
+}
+
+/* =========================
+   Rich Editor
+========================= */
+.template-title {
+    font-size: 22px;
+    font-weight: 850;
+    color: var(--text-dark);
+    margin: 4px 0 14px;
+}
+
+.template-report-row {
+    display: grid;
+    grid-template-columns: 260px minmax(0, 1fr);
+    gap: 14px;
+    margin-bottom: 12px;
+    padding: 12px;
+    background: var(--white);
+    border: 1px solid #e5eaf0;
+    border-radius: 14px;
+}
+
+.template-param-field {
+    width: 100%;
+    min-height: 96px;
+    border-radius: 12px;
+    border: 1px solid var(--border-mid);
+    padding: 12px 14px;
+    background: var(--white);
+    font-size: 15px;
+    font-weight: 850;
+    color: var(--text-dark);
+}
+
+.original-writing-field {
+    display: none !important;
+}
+
+.rich-editor {
+    width: 100%;
+    min-height: 96px;
+    border-radius: 12px;
+    border: 1px solid var(--border-mid);
+    padding: 12px 14px;
+    background: var(--white);
+    font-size: 15px;
+    line-height: 1.55;
+    outline: none;
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+.rich-editor.empty::before {
+    content: attr(data-placeholder);
+    font-family: Arial, Helvetica, sans-serif !important;
+    color: #737b84;
+    pointer-events: none;
+}
+
+.typed-english {
+    font-family: Arial, Helvetica, sans-serif !important;
+}
+
+.typed-bijoy {
+    font-family: "SutonnyMJ", serif !important;
+    font-size: 19px;
+    line-height: 1.55;
+}
+
+/* =========================
+   Extra Field
+========================= */
+#formFields {
+    margin-top: 12px;
+}
+
+.field-row {
+    display: grid;
+    grid-template-columns: 260px minmax(0, 1fr) auto;
+    align-items: stretch;
+    gap: 12px;
+    margin-bottom: 12px;
+    padding: 12px;
+    background: var(--white);
+    border: 1px solid #e5eaf0;
+    border-radius: 14px;
+}
+
+.extra-field-name {
+    min-height: 96px;
+    font-weight: 850;
+}
+
+#addFieldBtn {
+    border-radius: 10px;
+    font-weight: 850;
+}
+
+/* =========================
+   Medicine Builder UI
+========================= */
+.rx-prescription-note {
+    font-size: 12px;
+    color: #6d757d;
+    margin-bottom: 8px;
+}
+
+.rx-medicine-tools {
+    display: grid;
+    grid-template-columns: 1.3fr 0.9fr 0.9fr 0.9fr auto;
+    gap: 8px;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #e1e7ed;
+    border-radius: 12px;
+    background: #f8fbfd;
+}
+
+.rx-medicine-tools select,
+.rx-medicine-tools input {
+    min-height: 38px;
+    border-radius: 9px;
+    border: 1px solid #d7dee7;
+    padding: 8px 10px;
+    font-size: 14px;
+    background: var(--white);
+}
+
+.rx-medicine-tools button {
+    border-radius: 9px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+/* =========================
+   Hidden A4 Source
+========================= */
+#printSource {
+    position: fixed;
+    left: -99999px;
+    top: 0;
+    width: 794px;
+    height: 1123px;
+    overflow: hidden;
+    pointer-events: none;
+    opacity: 0;
+}
+
+/* =========================
+   A4 Report Style - Normal Mode
+========================= */
+#reportPreview {
+    width: var(--paper-width);
+    height: var(--paper-height);
+    min-height: var(--paper-height);
+    max-height: var(--paper-height);
+    background: var(--white);
+    padding: 24px 30px;
+    box-sizing: border-box;
+    color: var(--text-dark);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    line-height: 1.32;
+    word-break: break-word;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #d9dde2;
+    position: relative;
+}
+
+.report-logo {
+    width: 100%;
+    max-height: 100px;
+    object-fit: contain;
+    margin-bottom: 10px;
+}
+
+#subTitle {
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 16px;
+    font-weight: 850;
+    color: var(--text-dark);
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+#previewHeaderFields {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 7px;
+    margin-bottom: 12px;
+    padding: 8px;
+    background: var(--white);
+    border: 1px solid #e3e7ec;
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+#previewHeaderFields .header-preview {
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12px;
+    font-weight: 500;
+    color: #333;
+    padding: 6px 8px;
+    background: var(--white);
+    border: 1px solid #edf0f3;
+    border-radius: 7px;
+    line-height: 1.25;
+    min-height: 38px;
+    max-height: 56px;
+    overflow: hidden;
+}
+
+.preview-label {
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-weight: 850;
+    color: #222;
+}
+
+.preview-text {
+    font-family: Arial, Helvetica, sans-serif !important;
+    color: #222;
+}
+
+#previewTable {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    margin-top: 10px;
+    flex: 1 1 auto;
+}
+
+#previewTable th,
+#previewTable td {
+    border: 1px solid #333;
+    padding: 6px 7px;
+    vertical-align: top;
+}
+
+#previewTable th:first-child,
+#previewTable td:first-child {
+    width: 30%;
+}
+
+#previewTable th:nth-child(2),
+#previewTable td:nth-child(2) {
+    width: 70%;
+}
+
+#previewTable th {
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 14px;
+    font-weight: 850;
+    text-align: left;
+    background: #f8f9fa;
+    color: var(--text-dark);
+}
+
+#previewTable td.table-field-name {
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 14px;
+    font-weight: 850;
+    color: #222;
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+#previewTable td.table-field-value {
+    font-size: var(--detail-font-size);
+    line-height: 1.16;
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    overflow: hidden;
+}
+
+#previewTable td.table-field-value .typed-english {
+    font-family: Arial, Helvetica, sans-serif !important;
+}
+
+#previewTable td.table-field-value .typed-bijoy {
+    font-family: "SutonnyMJ", serif !important;
+    font-size: calc(var(--detail-font-size) + 4px);
+    line-height: 1.16;
+}
+
+.report-footer {
+    margin-top: auto;
+    border-top: 1px solid #d0d4d8;
+    padding-top: 9px;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 11px;
+    line-height: 1.35;
+    color: #222;
+    flex-shrink: 0;
+    background: var(--white);
+}
+
+.nutritionist {
+    font-weight: 850;
+    margin-bottom: 3px;
+}
+
+.address {
+    margin-bottom: 3px;
+}
+
+/* =========================
+   Rx Prescription Mode
+   Top logo/patient section remains same as normal report
+========================= */
+#reportPreview.rx-mode {
+    padding: 24px 30px;
+    overflow: hidden;
+}
+
+.rx-mode #normalReportLogo {
+    display: block !important;
+}
+
+.rx-mode #subTitle {
+    display: block !important;
+}
+
+.rx-mode #rxHeaderBand {
+    display: none !important;
+}
+
+.rx-mode #previewHeaderFields {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 7px;
+    margin-bottom: 12px;
+    padding: 8px;
+    background: var(--white);
+    border: 1px solid #e3e7ec;
+    border-radius: 8px;
+}
+
+.rx-mode #previewHeaderFields .header-preview {
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12px;
+    font-weight: 500;
+    color: #333;
+    padding: 6px 8px;
+    background: var(--white);
+    border: 1px solid #edf0f3;
+    border-radius: 7px;
+    line-height: 1.25;
+    min-height: 38px;
+    max-height: 56px;
+    overflow: hidden;
+}
+
+/* Rx body layout */
+.rx-body-area {
+    flex: 1 1 auto;
+    display: block;
+    margin-top: 12px;
+    min-height: 0;
+}
+
+.rx-prescription-layout {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 32% 68%;
+    border-top: 1px solid #333;
+    border-bottom: 1px solid #333;
+    min-height: 620px;
+    overflow: hidden;
+}
+
+.rx-left-column {
+    border-right: 1px solid #333;
+    padding: 12px 14px 12px 4px;
+    font-size: 12px;
+    line-height: 1.35;
+    overflow: hidden;
+}
+
+.rx-right-column {
+    padding: 12px 0 12px 16px;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.rx-left-item {
+    margin-bottom: 15px;
+}
+
+.rx-left-title {
+    font-size: 13px;
+    font-weight: 850;
+    color: #111;
+    margin-bottom: 5px;
+}
+
+.rx-left-text {
+    font-size: var(--detail-font-size);
+    line-height: 1.25;
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+.rx-symbol-main {
+    font-size: 28px;
+    font-family: Georgia, serif;
+    font-weight: 850;
+    color: #b00000;
+    margin-bottom: 8px;
+    line-height: 1;
+}
+
+.rx-medicine-list {
+    flex: 1 1 auto;
+    min-height: 300px;
+    font-size: var(--detail-font-size);
+    line-height: 1.28;
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+.rx-bottom-section {
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px dashed rgba(0, 0, 0, 0.35);
+}
+
+.rx-bottom-item {
+    margin-bottom: 9px;
+}
+
+.rx-bottom-title {
+    font-size: 13px;
+    font-weight: 850;
+    color: #111;
+    margin-bottom: 4px;
+}
+
+.rx-bottom-text {
+    font-size: var(--detail-font-size);
+    line-height: 1.25;
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+.rx-signature {
+    text-align: right;
+    margin-top: 16px;
+    padding-right: 35px;
+    font-size: 11px;
+    color: #34404a;
+}
+
+.rx-signature-line {
+    width: 125px;
+    border-top: 1px solid #7a8793;
+    margin-left: auto;
+    margin-bottom: 5px;
+}
+
+/* Hide old table in RX mode */
+.rx-mode #previewTable {
+    display: none !important;
+}
+
+.rx-mode #rxSymbol {
+    display: none !important;
+}
+
+.rx-mode .report-footer {
+    margin-top: 10px;
+    padding-top: 8px;
+    font-size: 10px;
+    border-top: 1px solid #d5dbe1;
+}
+
+/* =========================
+   Preview Modal
+========================= */
+.modal-xl-custom {
+    max-width: 860px;
+}
+
+.preview-modal-body {
+    background: #eef1f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 18px;
+    overflow: hidden;
+}
+
+.preview-scale-wrap {
+    width: calc(794px * var(--modal-scale));
+    height: calc(1123px * var(--modal-scale));
+}
+
+.preview-scale-wrap #reportPreview {
+    transform: scale(var(--modal-scale));
+    transform-origin: top left;
+    box-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.08),
+        0 14px 34px rgba(0, 0, 0, 0.20),
+        0 36px 70px rgba(0, 0, 0, 0.10);
+}
+
+/* =========================
+   Print
+========================= */
+@media print {
+    body {
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #fff !important;
+    }
+}
+
+/* =========================
+   Responsive
+========================= */
+@media (max-width: 992px) {
+    .report-page {
+        padding: 18px;
+    }
+
+    .form-topbar,
+    .patient-row,
+    .report-body-top,
+    .template-report-row,
+    .field-row {
+        grid-template-columns: 1fr;
+        display: grid;
+    }
+
+    #headerFields {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .rx-medicine-tools {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* =========================================================
+   Regular Prescription Template UI
+========================================================= */
+.regular-prescription-template {
+    width: 100%;
+    background: linear-gradient(180deg, #ffffff, #f8fafc);
+    border: 1px solid #e5eaf0;
+    border-radius: 18px;
+    padding: 18px;
+    margin-top: 12px;
+}
+
+.regular-prescription-template .template-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 18px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #e8edf2;
+}
+
+.regular-prescription-template .template-title {
+    font-size: 24px;
+    font-weight: 850;
+    color: #202428;
+    margin: 0;
+    letter-spacing: -0.3px;
+}
+
+.regular-prescription-template .template-subtitle {
+    font-size: 13px;
+    color: #6d757d;
+    margin-top: 4px;
+}
+
+.regular-prescription-template .template-badge {
+    background: #eef4ff;
+    color: #2457a7;
+    border: 1px solid #d8e7ff;
+    border-radius: 999px;
+    padding: 7px 12px;
+    font-size: 12px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.prescription-grid {
+    display: grid;
+    grid-template-columns: 260px minmax(0, 1fr);
+    gap: 14px;
+}
+
+.prescription-field-card {
+    background: #ffffff;
+    border: 1px solid #e4eaf1;
+    border-radius: 15px;
+    padding: 14px;
+    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.035);
+}
+
+.prescription-field-card.full-width-prescription {
+    grid-column: 2 / 3;
+}
+
+.prescription-field-card label {
+    display: block;
+    font-size: 13px;
+    font-weight: 850;
+    color: #2b3036;
+    margin-bottom: 8px;
+}
+
+.prescription-param {
+    width: 100%;
+    min-height: 42px;
+    border: 1px solid #dbe2ea;
+    border-radius: 10px;
+    padding: 9px 12px;
+    background: #f9fbfd;
+    font-size: 14px;
+    font-weight: 800;
+    color: #202428;
+    outline: none;
+}
+
+.prescription-param:focus {
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.16rem rgba(13, 110, 253, 0.12);
+    background: #ffffff;
+}
+
+.prescription-detail {
+    width: 100%;
+    min-height: 95px;
+    border: 1px solid #dbe2ea;
+    border-radius: 10px;
+    padding: 10px 12px;
+    background: #ffffff;
+    font-size: 14px;
+    line-height: 1.55;
+    color: #202428;
+    resize: vertical;
+    outline: none;
+}
+
+.prescription-detail:focus {
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.16rem rgba(13, 110, 253, 0.12);
+}
+
+.prescription-hint {
+    font-size: 12px;
+    color: #818b96;
+    margin-top: 7px;
+}
+
+/* Medicine builder */
+.rx-builder-panel {
+    border: 1px solid #e3e9ef;
+    background: linear-gradient(180deg, #fbfdff, #f7fafc);
+    border-radius: 14px;
+    padding: 12px;
+}
+
+.rx-builder-row {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 0.8fr auto;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.rx-builder-row select,
+.rx-builder-row input {
+    min-height: 42px;
+    border: 1px solid #d7dee7;
+    border-radius: 10px;
+    background: #ffffff;
+    padding: 9px 11px;
+    font-size: 14px;
+    color: #202428;
+}
+
+.rx-builder-row select:focus,
+.rx-builder-row input:focus {
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.16rem rgba(13, 110, 253, 0.12);
+    outline: none;
+}
+
+.rx-add-medicine-btn {
+    min-height: 42px;
+    border: none;
+    border-radius: 10px;
+    padding: 0 16px;
+    background: #202428;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 850;
+    white-space: nowrap;
+    transition: 0.2s ease;
+}
+
+.rx-add-medicine-btn:hover {
+    background: #0f1419;
+    transform: translateY(-1px);
+}
+
+.rx-quick-frequency {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.rx-quick-frequency button {
+    border: 1px solid #d7e2ee;
+    background: #ffffff;
+    color: #34404a;
+    border-radius: 999px;
+    padding: 6px 11px;
+    font-size: 12px;
+    font-weight: 750;
+    transition: 0.2s ease;
+}
+
+.rx-quick-frequency button:hover {
+    background: #eef4ff;
+    border-color: #bcd4ff;
+    color: #2457a7;
+}
+
+.prescription-medicine-field {
+    min-height: 140px;
+}
+
+/* RX preview body must show even when old table is hidden */
+.rx-mode #rxCustomPreview {
+    display: grid !important;
+}
+
+.rx-mode #previewTable {
+    display: none !important;
+}
+
+@media (max-width: 992px) {
+    .prescription-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .prescription-field-card.full-width-prescription {
+        grid-column: auto;
+    }
+
+    .regular-prescription-template .template-header {
+        flex-direction: column;
+    }
+
+    .rx-builder-row {
+        grid-template-columns: 1fr;
+    }
+}

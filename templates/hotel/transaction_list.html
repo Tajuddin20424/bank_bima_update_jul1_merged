@@ -1,0 +1,265 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Hotel Payment List{% endblock %}
+
+
+{% block content %}
+<div class="container-fluid mt-4">
+
+    <div class="card shadow" style="min-height: 85vh;">
+
+        <!-- ===================================================== -->
+        <!-- HEADER -->
+        <!-- ===================================================== -->
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+
+            <h5 class="mb-0">
+                Hotel Payment List
+            </h5>
+
+            <div>
+                <a href="{% url 'add_hotel_payment_page' %}?page_id=8000000001"
+                   class="btn btn-info text-white fw-bold"
+                   id="access_add_hotel_payment_page">
+                    + Add Payment - 8000000001
+                </a>
+            </div>
+
+        </div>
+
+
+        <div class="card-body">
+
+            <!-- ===================================================== -->
+            <!-- HOTEL FILTER -->
+            <!-- ===================================================== -->
+            <div class="row mb-3">
+
+                <!-- TRANSACTION MAIN HEAD -->
+                <div class="col-md">
+                    <label class="fw-semibold">Transaction Main Head</label>
+                    <select id="transactionmainheads" class="form-select" disabled>
+                        <option value="" selected>Hotel</option>
+                    </select>
+                </div>
+
+                <!-- GUEST -->
+                <div class="col-md">
+                    <label class="fw-semibold">Guest</label>
+                    <select id="guest_filter" class="form-select">
+                        <option value="">All Guest</option>
+                    </select>
+                </div>
+
+                <!-- SR -->
+                <div class="col-md">
+                    <label class="fw-semibold">SR</label>
+                    <select id="sr_filter" class="form-select">
+                        <option value="">All SR</option>
+                    </select>
+                </div>
+
+                <!-- TRANSACTION BY -->
+                <div class="col-md">
+                    <label class="fw-semibold">Transaction By</label>
+                    <select id="tran_by_filter" class="form-select">
+                        <option value="">All Transaction By</option>
+                    </select>
+                </div>
+
+            </div>
+
+
+            <!-- ===================================================== -->
+            <!-- SEARCH / STATUS / DATE / PER PAGE -->
+            <!-- ===================================================== -->
+            <form method="get" class="row g-2 align-items-end mb-3" id="hotelFilterForm">
+
+                <!-- SEARCH -->
+                <div class="col-md-3">
+                    <label class="small fw-semibold">Search</label>
+                    <input
+                        type="text"
+                        id="supplierSearch"
+                        name="search"
+                        class="form-control"
+                        placeholder="Search by guest / invoice / tran id"
+                        value="{{ search }}">
+                </div>
+
+                <!-- STATUS -->
+                <div class="col-md-2">
+                    <label class="small fw-semibold">Status</label>
+                    <select name="status" id="status" class="form-select">
+                        <option value="">Status</option>
+                        <option value="1" {% if status_filter == '1' %}selected{% endif %}>Verified</option>
+                        <option value="0" {% if status_filter == '0' %}selected{% endif %}>Non Verified</option>
+                    </select>
+                </div>
+
+                <!-- START DATE -->
+                <div class="col-md-2">
+                    <label class="small fw-semibold">Start Date</label>
+                    <input
+                        type="date"
+                        id="start_date"
+                        name="start_date"
+                        class="form-control"
+                        value="{{ start_date }}">
+                </div>
+
+                <!-- END DATE -->
+                <div class="col-md-2">
+                    <label class="small fw-semibold">End Date</label>
+                    <input
+                        type="date"
+                        id="end_date"
+                        name="end_date"
+                        class="form-control"
+                        value="{{ end_date }}">
+                </div>
+
+                <!-- PER PAGE -->
+                <div class="col-md-2">
+                    <label class="small fw-semibold">Per Page</label>
+                    <select id="perPage" name="per_page" class="form-select">
+                        {% for n in per_page_options %}
+                            <option value="{{ n }}" {% if per_page == n %}selected{% endif %}>{{ n }}</option>
+                        {% empty %}
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                            <option value="200">200</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- FILTER BUTTON -->
+                <div class="col-md-1 d-grid">
+                    <button type="submit" class="btn btn-primary" id="filterBtn">
+                        Filter
+                    </button>
+                </div>
+
+            </form>
+
+
+            <!-- ===================================================== -->
+            <!-- PAYMENT LIST -->
+            <!-- ===================================================== -->
+            <div class="card">
+
+                <div class="card-header bg-success text-white text-center">
+                    Payment List
+                </div>
+
+                <div class="table-responsive" style="max-height:400px; overflow-y:auto;">
+
+                    <table class="table table-bordered table-sm mb-0">
+
+                        <thead class="table-light sticky-top">
+                            <tr>
+                                <th>SL</th>
+                                <th>Tran ID</th>
+                                <th>Invoice Ref</th>
+                                <th>Date</th>
+                                <th>Supplier</th>
+                                <th>Guest</th>
+                                <th>SR</th>
+                                <th>Transaction By</th>
+                                <th class="text-end">Bill</th>
+                                <th class="text-end">Discount</th>
+                                <th class="text-end">Net</th>
+                                <th class="text-end">Advance</th>
+                                <th class="text-end">Due Col</th>
+                                <th class="text-end">Due Disc</th>
+                                <th class="text-end">Due</th>
+                                <th class="text-center">Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="paymentListTableBody">
+                            <!-- Data AJAX দিয়ে load হবে -->
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- TOTAL + PAYMENT + ACTION -->
+                <!-- ================================================= -->
+                <div class="card-body border-top">
+
+                    <div class="row align-items-end">
+
+                        <!-- TOTAL DUE -->
+                        <div class="col-md-3">
+                            <label class="fw-semibold">Total Due</label>
+                            <input type="text" id="total_due" class="form-control" readonly>
+                        </div>
+
+                        <!-- PAYMENT -->
+                        <div class="col-md-3">
+                            <label class="fw-semibold">Payment</label>
+                            <input type="number" id="fifo_payment" class="form-control">
+                        </div>
+
+                        <!-- PROCEED -->
+                        <div class="col-md-2">
+                            <label>&nbsp;</label>
+                            <button type="button" class="btn btn-primary form-control" id="fifo_pay_btn">
+                                Proceed
+                            </button>
+                        </div>
+
+                        <!-- SAVE / PRINT -->
+                        <div class="col-md-4 text-end">
+                            <label>&nbsp;</label>
+                            <div>
+                                <button type="button" id="saveAllBtn" class="btn btn-primary px-5">
+                                    Save
+                                </button>
+
+                                <button type="button" id="printReportBtn" class="btn btn-dark px-4">
+                                    Print / Download PDF
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}
+
+
+{% block extra_js %}
+<script>
+    window.APP_URLS = {
+        PAYMENT_LIST_URL: "{% url 'hotel_payment_list_load' %}",
+        TRAN_MAIN_HEAD_URL: "{% url 'get_transaction_main_heads_combo' %}",
+        TRAN_WITH_METHOD_URL: "/combo_load/transaction-with-method-combo/",
+        TRAN_WITH_URL: "/combo_load/transaction-with-combo/",
+        TRAN_USERS_URL: "/combo_load/transaction-with-user-combo/",
+        HOTEL_SR_FILTER_URL: "{% url 'hotel_filter_sr_combo' %}",
+        HOTEL_GUEST_FILTER_URL: "{% url 'hotel_filter_guest_combo' %}",
+        HOTEL_TRAN_BY_FILTER_URL: "{% url 'hotel_filter_tran_by_combo' %}"
+    };
+</script>
+
+<script src="{% static 'js/combo_load/transaction_main_heads_combo.js' %}"></script>
+<script src="{% static 'js/combo_load/transaction_with_method_combo.js' %}"></script>
+<script src="{% static 'js/combo_load/transaction_with_combo.js' %}"></script>
+<script src="{% static 'js/combo_load/transaction_with_user_combo.js' %}"></script>
+
+<script src="{% static 'js/hotel/payment_list.js' %}"></script>
+{% endblock %}

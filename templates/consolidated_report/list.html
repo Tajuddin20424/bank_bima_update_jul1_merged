@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Consolidated Report{% endblock %}
+{% block extra_css %}
+<style>
+  .main-container:has(.consolidated-report-page) .content { min-width: 0; }
+  .consolidated-report-page { width: 100%; max-width: 100%; min-width: 0; }
+  .consolidated-report-page .report-filters { display: grid; grid-template-columns: minmax(0, 2fr) minmax(150px, 1fr) minmax(150px, 1fr) 110px 180px; gap: 12px; align-items: end; }
+  .consolidated-report-page .card { width: 100%; max-width: 100%; overflow: visible; }
+  .consolidated-report-page .card-body { min-width: 0; }
+  .consolidated-report-page .table-responsive { display: block; width: 100%; max-width: 100%; overflow-x: auto !important; overflow-y: visible !important; }
+  .consolidated-report-page .report-table-width { width: 2100px; min-width: 2100px; }
+  .consolidated-report-page table { width: 100% !important; min-width: 100% !important; max-width: none !important; table-layout: fixed; font-size: .75rem; }
+  .consolidated-report-page th, .consolidated-report-page td { padding: 6px 5px !important; overflow-wrap: anywhere; word-break: break-word; line-height: 1.15; vertical-align: middle; }
+  .consolidated-report-page thead th { vertical-align: middle !important; }
+  .consolidated-report-page th:nth-child(2), .consolidated-report-page td:nth-child(2) { width: 145px; white-space: nowrap; }
+  .consolidated-report-page th:nth-child(3), .consolidated-report-page td:nth-child(3) { width: 145px; white-space: nowrap; }
+  @media (max-width: 900px) { .consolidated-report-page .report-filters { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 560px) { .consolidated-report-page .report-filters { grid-template-columns: 1fr; } }
+</style>
+{% endblock %}
+{% block content %}
+<div class="container-fluid mt-4 consolidated-report-page">
+  <div class="card shadow" style="min-height:85vh;">
+    <div class="card-header bg-primary text-white"><h5 class="mb-0">Consolidated Report</h5></div>
+    <div class="card-body">
+      <form method="get" class="report-filters mb-4">
+        <div><label class="fw-semibold">Transaction Main Head</label><select name="main_head" class="form-select"><option value="">All Main Heads</option>{% for item in main_heads %}<option value="{{ item.0 }}" {% if selected_main_head == item.0|stringformat:'s' %}selected{% endif %}>{{ item.1 }}</option>{% endfor %}</select></div>
+        <div><label class="fw-semibold">Start Date</label><input type="date" name="start_date" class="form-control" value="{{ start_date }}"></div>
+        <div><label class="fw-semibold">End Date</label><input type="date" name="end_date" class="form-control" value="{{ end_date }}"></div>
+        <div class="d-grid"><button class="btn btn-primary">Filter</button></div><div class="d-grid"><button type="submit" class="btn btn-dark" formaction="{% url 'consolidated_report_pdf' %}" formtarget="_blank">Print / Download PDF</button></div>
+      </form>
+      <div class="row g-3 mb-4"><div class="col-md-6"><div class="border rounded p-3 bg-light"><strong>Opening Balance:</strong> {{ opening_balance|floatformat:2 }}</div></div><div class="col-md-6"><div class="border rounded p-3 bg-light"><strong>Closing Balance:</strong> {{ closing_balance|floatformat:2 }}</div></div></div>
+      <div class="table-responsive"><div class="report-table-width"><table class="table table-bordered table-sm align-middle">
+        <thead class="table-light"><tr><th>SL</th><th>Tran ID</th><th>Invoice Ref</th><th>Date</th><th>Main Head</th><th>Transaction With</th><th>Tran User</th><th>User Name</th><th>Doctor</th><th>SR</th><th>Patient</th><th>Transaction By</th><th>Method</th><th>Bill</th><th>Discount</th><th>Net</th><th>Receive</th><th>Payment</th><th>Due</th><th>Due Col</th><th>Due Disc</th></tr></thead>
+        <tbody>{% for row in rows %}<tr><td>{{ forloop.counter }}</td><td>{{ row.tran_id }}</td><td>{{ row.invoice_ref }}</td><td>{{ row.tran_date|date:'Y-m-d H:i:s' }}</td><td>{{ row.main_head_name }}</td><td>{{ row.tran_with_name }}</td><td>{{ row.tran_user }}</td><td>{{ row.user_name }}</td><td>{{ row.doctor_name }}</td><td>{{ row.sr_name }}</td><td>{{ row.patient_name }}</td><td>{{ row.tran_by }}</td><td>{{ row.tran_method }}</td><td>{{ row.bill_amount|floatformat:2 }}</td><td>{{ row.discount|floatformat:2 }}</td><td>{{ row.net_amount|floatformat:2 }}</td><td>{{ row.receive|floatformat:2 }}</td><td>{{ row.payment|floatformat:2 }}</td><td>{{ row.due|floatformat:2 }}</td><td>{{ row.due_col|floatformat:2 }}</td><td>{{ row.due_disc|floatformat:2 }}</td></tr>{% empty %}<tr><td colspan="21" class="text-center">No transactions found</td></tr>{% endfor %}</tbody>
+        <tfoot><tr class="table-secondary fw-bold"><td colspan="13" class="text-end">Total</td><td>{{ totals.bill_amount|floatformat:2 }}</td><td>{{ totals.discount|floatformat:2 }}</td><td>{{ totals.net_amount|floatformat:2 }}</td><td>{{ totals.receive|floatformat:2 }}</td><td>{{ totals.payment|floatformat:2 }}</td><td>{{ totals.due|floatformat:2 }}</td><td>{{ totals.due_col|floatformat:2 }}</td><td>{{ totals.due_disc|floatformat:2 }}</td></tr></tfoot>
+      </table></div></div>
+    </div>
+  </div>
+</div>
+{% endblock %}

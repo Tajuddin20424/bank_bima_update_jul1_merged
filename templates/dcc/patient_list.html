@@ -1,0 +1,499 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2 class="text-center mb-4">Patient Management</h2>
+
+    <div class="d-flex justify-content-end mb-3">
+        <button class="btn btn-primary" id="addBtn">+ Add Patient</button>
+    </div>
+
+    <table class="table table-bordered table-hover text-center align-middle" id="patientTable">
+        <thead class="table-light">
+            <tr>
+                <th style="width:60px;">SL</th>
+                <th class="text-start"style="width:200px;">Name</th>
+                <th class="text-start">Cause of Visit</th>
+                <th>Mobile</th>
+                <th>Sex</th>
+                <th style="width:80px;">Age</th>
+                <th style="width:200px;">Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for p in patients %}
+            <tr data-id="{{ p.id }}">
+
+                <td>{{ forloop.counter }}</td>
+
+                <td class="text-start fw-semibold">
+                    {{ p.patient_name }}
+                </td>
+
+                <td class="text-start">
+                    {{ p.cause_visit_dcc }}
+                </td>
+
+                <td>{{ p.present_mobile }}</td>
+
+                <td>{{ p.sex }}</td>
+
+                <td>{{ p.age }}</td>
+
+                <td>
+                    <div class="d-flex justify-content-center gap-2">
+                        <button class="btn btn-sm btn-primary editBtn">
+                            Edit
+                        </button>
+
+                        <button class="btn btn-sm btn-danger deleteBtn">
+                            Delete
+                        </button>
+
+                        <a href="{% url 'patient_report' %}?patient_id={{ p.id }}"
+                           class="btn btn-sm btn-success">
+                            Prescribe
+                        </a>
+                    </div>
+                </td>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+<!-- FULL MODAL FOR ADD/EDIT -->
+<div class="modal fade" id="patientModal" data-bs-backdrop="static" data-bs-keyboard="false">
+<div class="modal-dialog modal-xl">
+
+<form id="patientForm">
+{% csrf_token %}
+<input type="hidden" id="patient_id" name="id">
+
+<div class="modal-content">
+
+<div class="modal-header">
+<h5 class="modal-title" id="modalTitle">Add Patient</h5>
+<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+</div>
+
+<div class="modal-body">
+
+<!-- PERSONAL INFO -->
+<h5>Personal Information</h5>
+
+<div class="row g-2">
+<div class="col-md-4">
+<label>Name *</label>
+<input name="patient_name" class="form-control" required>
+</div>
+
+<div class="col-md-4">
+<label>Father/Husband Name</label>
+<input name="father_husband_name" class="form-control">
+</div>
+
+<div class="col-md-4">
+<label>Mother Name</label>
+<input name="mother_name" class="form-control">
+</div>
+</div>
+
+
+<div class="row g-2 mt-2">
+<div class="col-md-4">
+<label>Parent/Spouse Name</label>
+<input name="parent_spouse_name" class="form-control">
+</div>
+
+<div class="col-md-4">
+<label>Date of Birth</label>
+<input id="dob" name="dob" type="date" class="form-control">
+</div>
+
+<div class="col-md-4">
+<label>Age</label>
+<input id="age" name="age" type="number" class="form-control" readonly>
+</div>
+</div>
+
+
+<div class="row g-2 mt-2">
+<div class="col-md-4">
+<label>Sex</label>
+<select name="sex" class="form-control">
+<option value="">Select</option>
+<option value="Male">Male</option>
+<option value="Female">Female</option>
+</select>
+</div>
+
+<div class="col-md-4">
+<label>Marital Status</label>
+<select name="marital_status" class="form-control">
+<option value="">Select</option>
+<option value="Married">Married</option>
+<option value="Unmarried">Unmarried</option>
+</select>
+</div>
+
+<div class="col-md-4">
+<label>Nationality</label>
+<input name="nationality" class="form-control">
+</div>
+</div>
+
+
+<div class="row g-2 mt-2">
+<div class="col-md-4">
+<label>Passport No</label>
+<input name="passport_no" class="form-control">
+</div>
+
+<div class="col-md-4">
+<label>Blood Group</label>
+<select name="blood_group" class="form-control">
+<option value="">Select Blood Group</option>
+<option value="A+">A+</option>
+<option value="A-">A-</option>
+<option value="B+">B+</option>
+<option value="B-">B-</option>
+<option value="AB+">AB+</option>
+<option value="AB-">AB-</option>
+<option value="O+">O+</option>
+<option value="O-">O-</option>
+</select>
+</div>
+
+<div class="col-md-4">
+<label>Country of Birth</label>
+<input name="country_of_birth" class="form-control">
+</div>
+</div>
+
+
+<div class="row g-2 mt-2">
+<div class="col-md-4">
+<label>Religion</label>
+<input name="religion" class="form-control">
+</div>
+
+<div class="col-md-4">
+<label>Occupation</label>
+<select name="occupation" class="form-control">
+<option value="">Select</option>
+<option value="Business">Business</option>
+<option value="Service">Service</option>
+</select>
+</div>
+</div>
+
+
+<div class="row g-2 mt-2">
+<div class="col-md-4">
+<label>Weight (kg)</label>
+<input id="weight" name="weight" type="number" step="0.1" class="form-control">
+</div>
+
+<div class="col-md-4">
+<label>Height (cm)</label>
+<input id="height" name="height" type="number" step="0.1" class="form-control">
+</div>
+
+<div class="col-md-4">
+<label>BMI</label>
+<input id="bmi" name="bmi" type="number" step="0.1" class="form-control" readonly>
+</div>
+</div>
+
+
+<hr>
+
+<!-- VISIT DETAILS -->
+<h5>Visit Details</h5>
+
+<div class="row g-2 mt-2">
+<div class="col-md-6">
+<label>Cause of Visit</label>
+<select name="cause_visit_dcc" class="form-control">
+<option value="">Select Cause</option>
+<option value="Diet">Diet</option>
+<option value="Counselling">Counselling</option>
+<option value="Exercise">Exercise</option>
+</select>
+</div>
+
+<div class="col-md-6">
+<label>Referral Source</label>
+<select name="referral_source" class="form-control">
+<option value="">Select Source</option>
+<option value="Advertisement">Advertisement</option>
+<option value="Billboard">Billboard</option>
+<option value="Feature News">Feature News</option>
+<option value="TV Program">TV Program</option>
+<option value="Magazine News">Magazine News</option>
+<option value="Leaflet">Leaflet</option>
+<option value="Reference">Reference</option>
+</select>
+</div>
+</div>
+
+
+<div class="row g-2 mt-2">
+<div class="col-md-12">
+<label>Have you consulted any doctor or consultant for this physical problem?</label>
+<select name="consulted_doctor" id="consulted_doctor" class="form-control">
+<option value="">Select</option>
+<option value="Yes">Yes</option>
+<option value="No">No</option>
+</select>
+</div>
+</div>
+
+
+<div class="row g-2 mt-2" id="doctorInfo" style="display:none;">
+<div class="col-md-6">
+<label>Doctor Name</label>
+<input type="text" name="doctor_name" class="form-control">
+</div>
+
+<div class="col-md-6">
+<label>Clinic Name</label>
+<input type="text" name="clinic_name" class="form-control">
+</div>
+</div>
+
+
+<div class="row g-2 mt-2">
+<div class="col-md-4">
+<label>Daily Routine</label>
+<textarea name="daily_routine" class="form-control"></textarea>
+</div>
+
+<div class="col-md-4">
+<label>Daily Diet</label>
+<textarea name="daily_diet" class="form-control"></textarea>
+</div>
+
+<div class="col-md-4">
+<label>Food Preferences</label>
+<textarea name="food_preferences" class="form-control"></textarea>
+</div>
+</div>
+
+
+<div class="row g-2 mt-2">
+<div class="col-md-6">
+<label>Avoid Foods</label>
+<textarea name="avoid_foods" class="form-control"></textarea>
+</div>
+
+<div class="col-md-6">
+<label>Diagnostic Reports</label>
+<textarea name="diagnostic_reports" class="form-control"></textarea>
+</div>
+</div>
+
+
+<hr>
+
+<!-- FAMILY & LIFESTYLE -->
+<h5>Family & Lifestyle</h5>
+
+<div class="row g-2 mt-2">
+
+<div class="col-md-6">
+<label>Physical Activity</label>
+<select name="physical_activity" class="form-control">
+<option value="">Select Activity Level</option>
+<option value="Low">Low</option>
+<option value="Moderate">Moderate</option>
+<option value="High">High</option>
+</select>
+</div>
+
+<div class="col-md-6">
+<label>Physical Condition</label>
+<select name="physical_condition" class="form-control">
+<option value="">Select Condition</option>
+<option value="Obesity">Obesity</option>
+<option value="Peptic Ulcer">Peptic Ulcer</option>
+<option value="Renal Problems">Renal Problems</option>
+<option value="Cardiac Disease">Cardiac Disease</option>
+<option value="Diabetes">Diabetes</option>
+<option value="Arthritis">Arthritis</option>
+<option value="Pregnancy">Pregnancy</option>
+<option value="Child Growth Failure">Child Growth Failure</option>
+<option value="Age-related Problems">Age-related Problems</option>
+<option value="Breastfeeding Mother">Breastfeeding Mother</option>
+<option value="None">None of them</option>
+</select>
+</div>
+
+<div class="col-md-6">
+<label>Do any other family members have these conditions?</label>
+<select name="family_condition" class="form-control">
+<option value="">Select Cause</option>
+<option value="Yes">Yes</option>
+<option value="No">No</option>
+</select>
+</div>
+
+<div class="col-md-6">
+<label>Family Relation</label>
+<select name="family_relation" class="form-control">
+<option value="">Select Relation</option>
+<option value="Mother">Mother</option>
+<option value="Father">Father</option>
+<option value="Brother">Brother</option>
+<option value="Sister">Sister</option>
+<option value="Husband">Husband</option>
+<option value="Wife">Wife</option>
+<option value="Son">Son</option>
+<option value="Daughter">Daughter</option>
+<option value="Others">Others</option>
+</select>
+</div>
+
+</div>
+
+
+<div class="row g-2 mt-2">
+<div class="col-md-12">
+<label>Diet</label>
+<textarea name="diet" class="form-control"></textarea>
+</div>
+</div>
+
+
+<hr>
+
+<!-- CONTACT INFO -->
+<h5>Contact & Emergency</h5>
+
+<div class="row g-2 mt-2">
+
+<div class="col-md-4">
+<label>Present Address</label>
+<textarea name="present_address" class="form-control"></textarea>
+</div>
+
+<div class="col-md-4">
+<label>Present Mobile</label>
+<input name="present_mobile" class="form-control">
+</div>
+
+<div class="col-md-4">
+<label>Present Email</label>
+<input name="present_email" type="email" class="form-control">
+</div>
+
+</div>
+
+
+<div class="row g-2 mt-2">
+
+<div class="col-md-4">
+<label>Permanent Address</label>
+<textarea name="permanent_address" class="form-control"></textarea>
+</div>
+
+<div class="col-md-4">
+<label>Permanent Mobile</label>
+<input name="permanent_mobile" class="form-control">
+</div>
+
+<div class="col-md-4">
+<label>Permanent Email</label>
+<input name="permanent_email" type="email" class="form-control">
+</div>
+
+</div>
+
+
+<div class="row g-2 mt-2">
+
+<div class="col-md-4">
+<label>Emergency Name</label>
+<input name="emergency_name" class="form-control">
+</div>
+
+<div class="col-md-4">
+<label>Emergency Relation</label>
+<input name="emergency_relation" class="form-control">
+</div>
+
+<div class="col-md-4">
+<label>Emergency Phone</label>
+<input name="emergency_phone" class="form-control">
+</div>
+
+</div>
+
+</div>
+
+
+<div class="modal-footer">
+<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+<button type="submit" class="btn btn-primary">Save Patient</button>
+</div>
+
+</div>
+</form>
+
+</div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script src="{% static 'js/dcc/patient_list.js' %}"></script>
+<script>
+    $(document).ready(function(){
+        // Doctor info toggle
+        $("#consulted_doctor").change(function(){
+            $(this).val() === "Yes" ? $("#doctorInfo").slideDown() : $("#doctorInfo").slideUp();
+        });
+
+        // BMI calculation
+        function calculateBMI() {
+            let weight = parseFloat($("#weight").val());
+            let height = parseFloat($("#height").val());
+            if(weight > 0 && height > 0){
+                let bmi = weight / ((height/100)*(height/100));
+                $("#bmi").val(bmi.toFixed(2));
+            } else $("#bmi").val('');
+        }
+        $("#weight, #height").on("input", calculateBMI);
+
+        // Age calculation
+        function calculateAge() {
+            let dobVal = $("#dob").val();
+
+            if (dobVal) {
+                let today = new Date();
+                let dob = new Date(dobVal);
+
+                let age = today.getFullYear() - dob.getFullYear();
+
+                let monthDiff = today.getMonth() - dob.getMonth();
+                let dayDiff = today.getDate() - dob.getDate();
+
+                if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+                    age--;
+                }
+
+                $("#age").val(age);
+            } else {
+                $("#age").val('');
+            }
+        }
+
+        $("#dob").on("change", calculateAge);
+    });
+</script>
+
+{% endblock %}

@@ -1,0 +1,270 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/patient_report.css' %}">
+
+<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+<input type="hidden" id="patient_id" name="patient_id" value="">
+
+<div class="container-fluid report-page">
+
+    <div class="form-shell">
+
+        <div class="form-topbar">
+            <div>
+                <h4 class="page-title">Patient Report Form Builder</h4>
+                <div class="page-subtitle">
+                    Fill patient details, write report body, preview, save, or download the exact A4 report.
+                </div>
+            </div>
+
+            <div class="top-actions">
+                <button id="previewBtn" type="button" class="btn btn-dark">Preview</button>
+                <button id="printBtn" type="button" class="btn btn-secondary">Print / Download</button>
+                <button id="savePrescription" type="button" class="btn btn-warning">Save Prescription</button>
+                <button id="viewOldPrescription" type="button" class="btn btn-info">See Previous Prescriptions</button>
+            </div>
+        </div>
+
+        <div class="patient-row">
+            <div>
+                <label>Patient Name:</label>
+                <select id="PatientSelect" class="form-control">
+                    <option value="">Select Patient</option>
+                    {% for patient in patients %}
+                        <option value="{{ patient.id }}">{{ patient.patient_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div id="reportWorkArea">
+
+            <div class="section-card">
+                <div class="section-heading">Patient Details</div>
+
+                <div id="headerFields">
+
+                    <div>
+                        <label class="form-label">Date:</label>
+                        <input type="date" id="headerDate" class="form-control header-input" data-field="Date">
+                    </div>
+
+                    <div>
+                        <label class="form-label">Name:</label>
+                        <input type="text" class="form-control header-input" data-field="Name" placeholder="Name">
+                    </div>
+
+                    <div>
+                        <label class="form-label">Age:</label>
+                        <input type="text" class="form-control header-input" data-field="Age" placeholder="Age">
+                    </div>
+
+                    <div>
+                        <label class="form-label">Gender:</label>
+                        <input type="text" class="form-control header-input" data-field="Gender" placeholder="Gender">
+                    </div>
+
+                    <div>
+                        <label class="form-label">Reason:</label>
+                        <input type="text" class="form-control header-input" data-field="Reason" placeholder="Reason to Come">
+                    </div>
+
+                    <div>
+                        <label class="form-label">Referred By:</label>
+                        <input type="text" class="form-control header-input" data-field="ReferredBy" placeholder="Referred By">
+                    </div>
+
+                    <div>
+                        <label class="form-label">BMI:</label>
+                        <input type="text" class="form-control header-input" data-field="BMI" placeholder="BMI">
+                    </div>
+
+                    <div>
+                        <label class="form-label">Cause Of Visit:</label>
+                        <input type="text" class="form-control header-input" data-field="CauseOfVisit" placeholder="Cause Of Visit">
+                    </div>
+
+                    <div>
+                        <label class="form-label">Physical Condition:</label>
+                        <input type="text" class="form-control header-input" data-field="PhysicalCondition" placeholder="Physical Condition">
+                    </div>
+
+                    <div>
+                        <label class="form-label">Present Mobile:</label>
+                        <input type="text" class="form-control header-input" data-field="PresentMobile" placeholder="Present Mobile">
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="section-card">
+                <div class="section-heading">Report Body</div>
+
+                <div class="report-body-top">
+                    <div>
+                        <label class="form-label">Report Type:</label>
+                        <select id="reportType" class="form-control">
+                            <option value="">Select Report Type</option>
+                            <option value="diet_plan">Diet Plan</option>
+                            <option value="regular_prescription">Regular Prescription</option>
+                            <option value="food_chart">Food Chart</option>
+                        </select>
+                    </div>
+
+                    <div class="bijoy-control-panel mb-0">
+                        <div class="bijoy-control-text">
+                            Writing Mode:
+                            <strong id="bijoyModeText">English / Normal</strong>
+                            <span class="text-muted ms-2">Ctrl/Cmd+B, I, U, Z supported</span>
+                        </div>
+
+                        <button id="bijoyModeBtn" type="button" class="btn btn-outline-dark btn-sm">
+                            Enable Bijoy / SutonnyMJ
+                        </button>
+                    </div>
+                </div>
+
+                <div id="formFieldsContainer">
+                    <div id="reportTemplateArea"></div>
+                    <div id="formFields"></div>
+
+                    <button id="addFieldBtn" type="button" class="btn btn-primary mt-2">
+                        Add Field
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Hidden A4 source -->
+<div id="printSource">
+    <div id="reportPreview">
+
+        <div class="rx-paper-inner">
+
+            <!-- RX Header: only visible in regular prescription mode -->
+            <div class="rx-header-band d-none" id="rxHeaderBand">
+                <div class="rx-doctor-block">
+                    <div class="rx-doctor-name">
+                        Dr. Doctor <span>Name</span>
+                    </div>
+                    <div class="rx-doctor-qualification">
+                        MBBS, FCPS, CONSULTANT
+                    </div>
+                </div>
+
+                <div class="rx-icon-circle">
+                    +
+                </div>
+            </div>
+
+            <!-- Normal Report Logo: hidden in RX mode -->
+            <img src="{% static 'images/diet.png' %}" alt="Logo" class="report-logo" id="normalReportLogo">
+
+            <h5 id="subTitle">Patient Details</h5>
+
+            <div id="previewHeaderFields">
+                <div class="header-preview" data-field="Date"></div>
+                <div class="header-preview" data-field="Name"></div>
+                <div class="header-preview" data-field="Age"></div>
+                <div class="header-preview" data-field="Gender"></div>
+                <div class="header-preview" data-field="Reason"></div>
+                <div class="header-preview" data-field="ReferredBy"></div>
+                <div class="header-preview" data-field="BMI"></div>
+                <div class="header-preview" data-field="CauseOfVisit"></div>
+                <div class="header-preview" data-field="PhysicalCondition"></div>
+                <div class="header-preview" data-field="PresentMobile"></div>
+            </div>
+
+            <div class="rx-body-area" id="rxBodyArea">
+                <div class="rx-symbol d-none" id="rxSymbol">℞</div>
+
+                <div class="rx-table-wrap">
+                    <table id="previewTable">
+                        <colgroup>
+                            <col style="width: 30%;">
+                            <col style="width: 70%;">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th id="previewTableHeadParam">Meal</th>
+                                <th id="previewTableHeadValue">Food</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+
+                    <div class="rx-signature d-none" id="rxSignature">
+                        <div class="rx-signature-line"></div>
+                        Signature
+                    </div>
+                </div>
+            </div>
+
+            <footer class="report-footer">
+                <div class="footer-content">
+
+                    <div class="nutritionist">
+                        <strong>Sayeeda Sharmeen Akter</strong><br>
+                        Principal Nutritionist & CEO
+                    </div>
+
+                    <div class="address">
+                        Navana Zohura Square, 28 Kazi Nazrul Islam Avenue,
+                        Banglamotor, Dhaka-1000, Bangladesh.
+                    </div>
+
+                    <div class="contact">
+                        Helpline: +88 02 58313099, +8801912013696
+                        | www.facebook.com/dietbd |
+                        www.dietcounselingcentre.com
+                    </div>
+
+                </div>
+            </footer>
+
+        </div>
+    </div>
+</div>
+
+<!-- Preview Modal -->
+<div class="modal fade" id="previewModal" tabindex="-1">
+    <div class="modal-dialog modal-xl modal-xl-custom modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header py-2">
+                <h5 class="modal-title fw-bold">A4 Preview</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body preview-modal-body">
+                <div class="preview-scale-wrap" id="previewModalPaper"></div>
+            </div>
+
+            <div class="modal-footer py-2">
+                <button type="button" class="btn btn-secondary" id="modalPrintBtn">Print / Download</button>
+                <button type="button" class="btn btn-warning" id="modalSaveBtn">Save Prescription</button>
+                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.PATIENT_REPORT_CONFIG = {
+        patientDataUrl: "/dcc/patients/__PATIENT_ID__/data/",
+        loadTemplateUrl: "/dcc/load-report-template/",
+        saveUrl: "/dcc/patients/prescriptions/save/",
+        oldPrescriptionUrl: "/dcc/patients/prescriptions/__PATIENT_ID__/"
+    };
+</script>
+
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{% static 'js/dcc/patient_report.js' %}"></script>
+
+{% endblock %}

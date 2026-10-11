@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Pharmacy Party Payment{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="card shadow" style="min-height: 85vh;">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Pharmacy Party Payment</h5>
+        </div>
+        <div class="card-body">
+            <form id="pharmacyPartyPaymentFilter" class="row g-2 align-items-end mb-3">
+                <div class="col-md-4">
+                    <label class="fw-semibold">Search</label>
+                    <input type="text" id="pharmacyPartySearch" class="form-control"
+                           placeholder="Search by supplier, invoice or transaction ID">
+                </div>
+                <div class="col-md-2">
+                    <label class="fw-semibold">Start Date</label>
+                    <input type="date" id="pharmacy_start_date" class="form-control">
+                </div>
+                <div class="col-md-2">
+                    <label class="fw-semibold">End Date</label>
+                    <input type="date" id="pharmacy_end_date" class="form-control">
+                </div>
+                <div class="col-md-2">
+                    <label class="fw-semibold">Per Page</label>
+                    <select id="pharmacyPerPage" class="form-select">
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                        <option value="200">200</option>
+                    </select>
+                </div>
+                <div class="col-md-2 d-grid">
+                    <button class="btn btn-primary" type="submit">Filter</button>
+                </div>
+            </form>
+
+            <div class="card">
+                <div class="card-header bg-success text-white text-center">Pharmacy Party Payment List</div>
+                <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+                    <table class="table table-bordered table-sm mb-0">
+                        <thead class="table-light sticky-top">
+                            <tr>
+                                <th>SL</th><th>Tran ID</th><th>Invoice Ref</th><th>Date</th>
+                                <th>Supplier</th><th>User</th><th class="text-end">Bill</th>
+                                <th class="text-end">Discount</th><th class="text-end">Net</th>
+                                <th class="text-end">Receive</th><th class="text-end">Payment</th>
+                                <th class="text-end">Due</th><th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pharmacyPartyPaymentBody"></tbody>
+                    </table>
+                </div>
+                <div class="card-body border-top">
+                    <div class="row align-items-end">
+                        <div class="col-md-3">
+                            <label class="fw-semibold">Total Due</label>
+                            <input type="text" id="pharmacy_total_due" class="form-control" readonly>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="fw-semibold">Payment</label>
+                            <input type="number" id="pharmacy_fifo_payment" class="form-control" min="0" step="0.01">
+                        </div>
+                        <div class="col-md-2 d-grid">
+                            <button type="button" class="btn btn-primary" id="pharmacy_fifo_pay_btn">Proceed</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+window.APP_URLS = {
+    PARTY_PAYMENT_LIST_URL: "{% url 'pharmacy_party_payment_list_load' %}",
+    PARTY_PAYMENT_FORM_BASE_URL: "{% url 'pharmacy_party_payment_form' 0 %}".replace("0/", ""),
+    PARTY_PAYMENT_FIFO_URL: "{% url 'pharmacy_party_payment_fifo' %}"
+};
+</script>
+<script src="{% static 'js/pharmacy/party_payment_list.js' %}?v=2026092101"></script>
+{% endblock %}

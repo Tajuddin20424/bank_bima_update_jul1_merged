@@ -1,0 +1,85 @@
+<!-- ===== Diet Plan Partial Template ===== -->
+
+<div id="dietPlanForm">
+
+    <h5>Diet Plan</h5>
+
+    <!-- Breakfast -->
+    <div class="field-row" data-row="breakfast">
+        <input type="text" class="form-control field-name" value="Breakfast" readonly>
+        <input type="text" class="form-control field-value" placeholder="Enter Breakfast">
+    </div>
+
+    <!-- Lunch -->
+    <div class="field-row" data-row="lunch">
+        <input type="text" class="form-control field-name" value="Lunch" readonly>
+        <input type="text" class="form-control field-value" placeholder="Enter Lunch">
+    </div>
+
+    <!-- Dinner -->
+    <div class="field-row" data-row="dinner">
+        <input type="text" class="form-control field-name" value="Dinner" readonly>
+        <input type="text" class="form-control field-value" placeholder="Enter Dinner">
+    </div>
+
+</div>
+
+<script>
+$(document).ready(function(){
+
+    // ===== Set SubTitle =====
+    $("#subTitle").text("Diet Plan");
+
+    // ===== Reset preview table =====
+    $("#previewTable thead").html(`
+        <tr>
+            <th>Meal</th>
+            <th>Food</th>
+        </tr>
+    `);
+
+    $("#previewTable tbody").html(`
+        <tr id="row_breakfast">
+            <td class="table-field-name">Breakfast</td>
+            <td class="table-field-value"></td>
+        </tr>
+        <tr id="row_lunch">
+            <td class="table-field-name">Lunch</td>
+            <td class="table-field-value"></td>
+        </tr>
+        <tr id="row_dinner">
+            <td class="table-field-name">Dinner</td>
+            <td class="table-field-value"></td>
+        </tr>
+    `);
+
+    // ===== Live Update Hook =====
+    $("#dietPlanForm .field-row").each(function(){
+        let rowId = $(this).data("row");
+        $(this).find(".field-value").on("input", function(){
+            $("#row_" + rowId + " .table-field-value").text($(this).val());
+            shrinkPreviewFont();
+        });
+    });
+
+    // ===== Auto Font Shrink =====
+    function shrinkPreviewFont(){
+        let preview = $("#reportPreview");
+        let maxHeight = 1123; // A4 page height in px
+        let fontSize = 16;
+
+        let cells = preview.find("td.table-field-value");
+
+        cells.css("font-size", fontSize + "px");
+
+        // shrink loop
+        while(preview[0].scrollHeight > maxHeight && fontSize > 6){
+            fontSize -= 0.5;
+            cells.css("font-size", fontSize + "px");
+        }
+    }
+
+    // ===== Initial shrink call =====
+    shrinkPreviewFont();
+});
+</script>
